@@ -3,6 +3,9 @@ venv/
 
 # Файлы проекта PyCharm
 .idea/
+__pycache__
 
 # Прочее
 tasks.txt
+*.log
+
