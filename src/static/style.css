@@ -1,0 +1,256 @@
+html, body {
+    height: 100%; /* Убедитесь, что высота страницы заполняет 100% экрана */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* Основной контент занимает всё доступное пространство */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрирование контента по вертикали */
+}
+
+
+header {
+    background-image: linear-gradient(#007764, white);
+    height: 72px;
+    width: 100%;
+}
+
+.content {
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1219px;
+    align-items: center;
+}
+
+.navigation {
+    /*Навигацию перенести на центр, сделать другой цвета*/
+    display: flex;
+    margin: auto;
+    justify-content: flex-end;
+    padding-right: 15px;
+}
+
+.navigation_button {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: font 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    padding-left: 12px;
+
+}
+
+.navigation_button:hover {
+    transform: scale(1.2);
+    font-size: 18px;
+}
+
+
+.enlarging_text {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    flex-direction: row;
+    color: #007764;
+}
+
+.word {
+    display: flex; /* Располагает буквы в строку */
+    margin: 15px;
+    font-size: 36px;
+}
+
+.letter {
+    transition: font 0.3s ease, transform 0.3s ease;
+    margin: 10px;
+    cursor: default;
+}
+
+.letter:hover {
+    transform: scale(1.5);
+}
+
+
+.description {
+    color: #007764;
+    font-size: 22px;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+}
+
+.image_court {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 200px;
+    margin: auto;
+    flex-direction: row;
+    max-width: max-content;
+    min-height: 100px;
+}
+
+
+.creat_match {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.image_player img {
+    width: 300px;
+    height: 300px;
+}
+
+.creat_match_button {
+    font-size: 30px;
+    line-height: 100px;
+    border-radius: 30px;
+    background: #007764;
+    width: 300px;
+    color: white;
+    font-style: italic;
+    border: none;
+    transition: border-radius 0.3s ease-in;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(61, 105, 16, 0.5)
+}
+
+.creat_match_button:hover {
+    border-radius: 50px;
+    background: #00a881;
+    /*background: #00473d;*/
+}
+
+
+footer {
+    background-image: linear-gradient(white, #007764);
+    display: flex; /* Убедитесь, что футер тоже flex-контейнер */
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+    height: 72px; /* Высота футера */
+}
+
+footer .content {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+    gap: 15px; /* Расстояние между иконками */
+    align-content: center;
+}
+
+.image_footer {
+    margin: 0; /* Убираем ненужные отступы */
+}
+
+.image_footer img {
+    width: 20px; /* Устанавливаем размер иконок */
+    height: 20px;
+    transition: font 0.3s ease, transform 0.3s ease;
+}
+
+.image_footer img :hover {
+    width: 40px; /* Устанавливаем размер иконок */
+    height: 40px;
+}
+
+/* Общий стиль формы */
+.new_match_form {
+    max-width: 500px; /* Ограничение ширины формы */
+    margin: 20px auto; /* Центрирование формы на странице */
+    padding: 20px;
+    border: 1px solid #007764; /* Рамка формы */
+    border-radius: 10px;
+    background-color: #f9f9f9; /* Легкий фон */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень */
+}
+
+/* Стили для контейнера имени игрока */
+.players_name {
+    margin-bottom: 20px; /* Отступ между полями ввода */
+    display: flex;
+    flex-direction: column; /* Поле и подпись располагаются вертикально */
+}
+
+/* Стили для поля ввода */
+.players_name input {
+    padding: 10px;
+    border: 1px solid #007764; /* Цвет рамки */
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none; /* Убирает стандартное выделение */
+    transition: border-color 0.3s;
+}
+
+/* Изменение цвета рамки при фокусе */
+.players_name input:focus {
+    border-color: #00a881; /* Цвет рамки при фокусе */
+}
+
+/* Стили для подписей (label) */
+.players_name label {
+    font-size: 14px;
+    color: #007764;
+    margin-top: 8px;
+}
+
+/* Стили для требований */
+.requirements {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Стили для кнопки отправки */
+.create_match {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007764; /* Цвет кнопки */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Эффект при наведении на кнопку */
+.create_match:hover {
+    background-color: #00a881; /* Более светлый цвет */
+}
+
+/* Общее для всей формы */
+.new_match_form input:invalid {
+    border-color: red; /* Красная рамка, если введены некорректные данные */
+}
+
+.new_match_form input:valid {
+    border-color: #00a881; /* Зеленая рамка для валидных данных */
+}
+
+
+@media screen and (max-width: 800px) {
+    .image_court {
+        width: 100%;
+        height: 150px;
+
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .image_court {
+        width: 100%;
+        height: 350px;
+
+    }
+}
