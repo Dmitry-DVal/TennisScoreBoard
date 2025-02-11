@@ -34,7 +34,7 @@ LOG_CONFIG = {
         },
         'debug_file_handler': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'level': 'DEBUG',
+            'level': 'INFO',
             'filename': '../logs/debug.log',
             'formatter': 'simple_format',
             'maxBytes': 10485760,  # 10 MB

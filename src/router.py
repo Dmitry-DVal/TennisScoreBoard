@@ -1,31 +1,36 @@
 import logging
 
-from handlers import handle_index, handle_new_match, handle_matches, handle_match_score
+from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler)
 from static_handler import serve_static
 
 logger = logging.getLogger("app_logger")
 
 
-def application(environ, start_response):
-    """Определяет, какой обработчик вызывать"""
+class Router:
+    """Маршрутизатор запросов."""
+    routes = {
+        "/": IndexHandler(),
+        "/new-match": NewMatchHandler(),
+        "/match-score": MatchScoreHandler(),
+        "/matches": MatchesHandler()
+    }
 
-    path = environ.get("PATH_INFO", "/")
-    method = environ.get("REQUEST_METHOD", "GET")
+    @classmethod
+    def application(cls, environ, start_response):
+        """Вызов нужного обработчика по URL."""
+        path = environ.get("PATH_INFO", "/")
+        method = environ.get("REQUEST_METHOD", "GET")
 
-    # logger.debug(f"environ = {environ}, start_response = {start_response}")
-    logger.info(f"Запрос: {method} {path}")
+        logger.debug(f"Запрос: {method} {path}")
 
-    if path == "/":
-        return handle_index(environ, start_response)
-    elif path == "/new-match":
-        return handle_new_match(environ, start_response)
-    elif path == "/matches":
-        return handle_matches(environ, start_response)
-    elif path == "/match-score":
-        return handle_match_score(environ, start_response)
-    elif path.startswith("/static/"):
-        return serve_static(environ, start_response)
-    else:
-        response_body = b"404 Not Found"
-        start_response("404 Not Found", [("Content-Type", "text/plain")])
-        return [response_body]
+        if path.startswith("/static/"):
+            return serve_static(environ, start_response)
+
+        handler = cls.routes.get(path)
+        if handler:
+            logger.info(f"Запрос {method}: {path}")
+            return handler.handle_request(environ, start_response)
+        else:
+            response_body = b"404 Not Found"
+            start_response("404 Not Found", [("Content-Type", "text/plain")])
+            return [response_body]

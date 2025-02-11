@@ -3,6 +3,9 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    background-color: white;
+
+    /*background-color: black;*/
 }
 
 main {
@@ -15,6 +18,8 @@ main {
 
 header {
     background-image: linear-gradient(#007764, white);
+    /*background-image: linear-gradient(#007764, black);*/
+
     height: 72px;
     width: 100%;
 }
@@ -136,6 +141,7 @@ header {
 
 footer {
     background-image: linear-gradient(white, #007764);
+    /*background-image: linear-gradient(black, #007764);*/
     display: flex; /* Убедитесь, что футер тоже flex-контейнер */
     justify-content: center; /* Центрирование по горизонтали */
     align-items: center; /* Центрирование по вертикали */
