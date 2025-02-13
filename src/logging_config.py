@@ -15,7 +15,7 @@ LOG_CONFIG = {
         },
         'color_format': {
             '()': 'colorlog.ColoredFormatter',
-            'format': "%(log_color)s%(asctime)s - %(levelname)s - %(message)s",
+            'format': "%(log_color)s%(asctime)s - %(levelname)s - %(module)s:%(lineno)s - %(message)s",
             'datefmt': '%H:%M:%S',
             'log_colors': {
                 'DEBUG': 'cyan',

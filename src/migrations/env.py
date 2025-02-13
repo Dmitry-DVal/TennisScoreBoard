@@ -6,7 +6,7 @@ from sqlalchemy import pool
 
 from src.config import settings_db
 from src.database import Base
-from src.models import MatchesOrm, PlayersOrm  # noqa
+from src.models import MatchesOrm, PlayerOrm  # noqa
 
 config = context.config
 
