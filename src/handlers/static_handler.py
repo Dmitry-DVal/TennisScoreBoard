@@ -1,7 +1,7 @@
 import logging
 import os
 
-from config import STATIC_DIR
+from src.config import STATIC_DIR
 
 logger = logging.getLogger("app_logger")
 

@@ -1,7 +1,8 @@
 import logging
 
-from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler)
-from static_handler import serve_static
+from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler,
+                      serve_static)
+
 
 logger = logging.getLogger("app_logger")
 

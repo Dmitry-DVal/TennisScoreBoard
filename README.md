@@ -22,40 +22,44 @@ https://zhukovsd.github.io/python-backend-learning-course/projects/tennis-scoreb
 ```
 project/
 ├── logs/                   # Файлы с логами
-├── requirements            # Зависимости
-├── README                  # О проекте
-├── .env                    # Настройки подключения к БД
-├── alembic.ini             # Параметры конфигурации
-│
 ├── src/
+│   ├── dtos/               # Data Transfer Objects
 │   ├── handlers/           # Обработчики запросов
 │   │   ├── __init__.py
 │   │   ├── base_handler.py
 │   │   ├── index_handler.py 
+│   │   ├── static_handler
 │   │   ├── etc
 │   ├── migrations/         # Миграции alembic
 │   │   ├── versions/       # Версии миграций
 │   │   ├── env.py          # Конфигурации alembic
 │   │   ├── script.py.mako  # Шаблон для скрипов миграций
+│   ├── models/             # Модели ORM
+│   │   ├── match_model.py  # Модель матча
+│   │   ├── player_model.py # Модель игрока
+│   ├── services/           # Сервисы с логикой
 │   ├── static/             # Статика (CSS, изображения)
 │   │   ├── style.css
 │   │   ├── images/         # Изображения для сайта
 │   │   │   ├── player_first.png
 │   │   │   ├── etc
-│   ├── templates/          # HTML-шаблоны
+│   ├── templates/          # HTML-шаблоны 
 │   │   ├── index.html
 │   │   ├── new_match.html
 │   │   ├── match_score
 │   │   ├── completed_matches
 │   ├── tests/              # Юнит тесты
+│   ├── validators/         # Валидатор данных
 │   ├── __init__.py
 │   ├── config.py           # Конфигурация проекта
 │   ├── database.py         # Конфигурация базы данных
 │   ├── logging_config.py   # Настройка логов
-│   ├── models.py           # ORM модели игроков и матчей
 │   ├── router.py           # Маршрутизатор
 │   ├── server.py           # Запуск сервера
-│   ├── static_handler.py   # Раздает статические файлы
+├── .env                    # Настройки подключения к БД
+├── alembic.ini             # Параметры конфигурации
+├── README                  # О проекте
+├── requirements            # Зависимости
 ```
 
 ### Функционал приложения
