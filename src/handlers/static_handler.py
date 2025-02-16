@@ -12,7 +12,7 @@ def serve_static(environ, start_response):
     path = environ.get("PATH_INFO", "/")
     file_path = os.path.join(STATIC_DIR, path[len("/static/"):])
 
-    logger.debug(f"Запрос статики: {path} → {file_path}")
+    # logger.debug(f"Запрос статики: {path} → {file_path}")
 
     if os.path.exists(file_path) and os.path.isfile(file_path):
         with open(file_path, "rb") as f:

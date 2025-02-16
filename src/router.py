@@ -3,7 +3,6 @@ import logging
 from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler,
                       serve_static)
 
-
 logger = logging.getLogger("app_logger")
 
 
@@ -22,7 +21,7 @@ class Router:
         path = environ.get("PATH_INFO", "/")
         method = environ.get("REQUEST_METHOD", "GET")
 
-        logger.debug(f"Запрос: {method} {path}")
+        # logger.debug(f"Запрос: {method} {path}")
 
         if path.startswith("/static/"):
             return serve_static(environ, start_response)

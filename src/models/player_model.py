@@ -4,7 +4,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from src.database import Base
 
 
-class PlayersOrm(Base):
+class PlayerOrm(Base):
     __tablename__ = "Players"
     ID: Mapped[int] = mapped_column(primary_key=True,
                                     autoincrement=True)

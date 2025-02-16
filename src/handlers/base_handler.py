@@ -7,11 +7,17 @@
 Остальные обработчики наследуются от него.
 """
 
+
+
 from abc import abstractmethod, ABC
 
 from jinja2 import Environment, FileSystemLoader
 
 from src.config import TEMPLATES_DIR
+import logging
+
+logger = logging.getLogger("app_logger")
+
 
 
 class BaseHandler(ABC):
