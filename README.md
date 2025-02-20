@@ -21,50 +21,54 @@ https://zhukovsd.github.io/python-backend-learning-course/projects/tennis-scoreb
 
 ```
 project/
-├── logs/                   # Файлы с логами
+├── logs/                      # Файлы с логами
 ├── src/
-│   ├── dtos/               # Data Transfer Objects
+│   ├── dtos/                  # Data Transfer Objects
 │   │   ├── __init__.py
 │   │   ├── player_dto.py
-│   ├── handlers/           # Обработчики запросов
+│   ├── handlers/              # Обработчики запросов
 │   │   ├── __init__.py
 │   │   ├── base_handler.py
 │   │   ├── index_handler.py 
 │   │   ├── static_handler
 │   │   ├── etc
-│   ├── migrations/         # Миграции alembic
-│   │   ├── versions/       # Версии миграций
-│   │   ├── env.py          # Конфигурации alembic
-│   │   ├── script.py.mako  # Шаблон для скрипов миграций
-│   ├── models/             # Модели ORM
+│   ├── migrations/            # Миграции alembic
+│   │   ├── versions/          # Версии миграций
+│   │   ├── env.py             # Конфигурации alembic
+│   │   ├── script.py.mako     # Шаблон для скрипов миграций
+│   ├── models/                # Модели ORM
 │   │   ├── __init__.py
-│   │   ├── match_model.py  # Модель матча
-│   │   ├── player_model.py # Модель игрока
-│   ├── services/           # Сервисы с логикой
+│   │   ├── match_model.py     # Модель матча
+│   │   ├── player_model.py    # Модель игрока
+│   ├── services/              # Сервисы с логикой
 │   │   ├── __init__.py
-│   │   ├── match_service.py  # Модель матча
-│   │   ├── player_service.py # Модель игрока
-│   ├── static/             # Статика (CSS, изображения)
+│   │   ├── match_service.py   # Сервис матча
+│   │   ├── player_service.py  # Сервис игрока
+│   │   ├── scoring_service.py # Модель подсчета очков
+│   ├── static/                # Статика (CSS, изображения)
 │   │   ├── style.css
-│   │   ├── images/         # Изображения для сайта
+│   │   ├── images/            # Изображения для сайта
 │   │   │   ├── player_first.png
 │   │   │   ├── etc
-│   ├── templates/          # HTML-шаблоны 
+│   ├── templates/             # HTML-шаблоны 
 │   │   ├── index.html
 │   │   ├── new_match.html
 │   │   ├── match_score
 │   │   ├── completed_matches
-│   ├── tests/              # Юнит тесты
 │   ├── __init__.py
-│   ├── config.py           # Конфигурация проекта
-│   ├── database.py         # Конфигурация базы данных
-│   ├── logging_config.py   # Настройка логов
-│   ├── router.py           # Маршрутизатор
-│   ├── server.py           # Запуск сервера
-├── .env                    # Настройки подключения к БД
-├── alembic.ini             # Параметры конфигурации
-├── README                  # О проекте
-├── requirements            # Зависимости
+│   ├── config.py             # Конфигурация проекта
+│   ├── database.py           # Конфигурация базы данных
+│   ├── logging_config.py     # Настройка логов
+│   ├── router.py             # Маршрутизатор
+│   ├── server.py             # Запуск сервера
+├── tests/                    # Юнит тесты
+│   ├── __init__.py
+│   ├── test_scoring_service.py
+├── .env                      # Настройки подключения к БД
+├── alembic.ini               # Параметры конфигурации alembic
+├── pytest.ini                # Параметры конфигурации pytest
+├── README                    # О проекте
+├── requirements              # Зависимости
 ```
 
 ### Функционал приложения
