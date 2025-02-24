@@ -1,11 +1,9 @@
 html, body {
-    height: 100%; /* Убедитесь, что высота страницы заполняет 100% экрана */
+    height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
     background-color: white;
-
-    /*background-color: black;*/
 }
 
 main {
@@ -18,8 +16,6 @@ main {
 
 header {
     background-image: linear-gradient(#007764, white);
-    /*background-image: linear-gradient(#007764, black);*/
-
     height: 72px;
     width: 100%;
 }
@@ -260,3 +256,62 @@ footer .content {
 
     }
 }
+
+
+/* Центрирование таблицы */
+.score_table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+/* Таблица и ячейки */
+.table {
+    border-collapse: collapse;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+th, td {
+    border: 1px solid #00a881;
+    padding: 10px;
+}
+
+th {
+    background-color: #007764;
+    color: white;
+}
+
+/* Стили для кнопок "Score" */
+.score-btn {
+    background-color: #007764;
+    color: white;
+    font-size: 16px;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.score-btn:hover {
+    background-color: #00a881;
+    transform: scale(1.1);
+    border-radius: 8px;
+}
+
+/* Медиа-запросы */
+@media screen and (max-width: 800px) {
+    .table {
+        width: 95%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .table {
+        width: 600px;
+    }
+}
+
