@@ -58,24 +58,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="player1">
-                    <td>First player</td>
-                    <td>1</td>
-                    <td>4</td>
-                    <td>30</td>
+                <!-- 🔹 Динамически заполняем таблицу данными из match -->
+                {% for i in [0, 1] %}
+                <tr class="player{{ i + 1 }}">
+                    <!--                    <td>{{ match.Player1 if i == 0 else match.Player2 }}</td>-->
+                    <td>{{ player1_name if i == 0 else player2_name }}</td>
+                    <td>{{ match.Score.get("sets", [0, 0])[i] if match.Score else 0 }}</td>
+                    <td>{{ match.Score.get("games", [0, 0])[i] if match.Score else 0 }}</td>
+                    <td>{{ match.Score.get("points", [0, 0])[i] if match.Score else 0 }}</td>
                     <td>
-                        <button class="score-btn">score</button>
+                        <!-- 🔹 Форма для обновления счета -->
+                        <form method="post" action="/match-score?uuid={{ match.UUID }}">
+                            <input type="hidden" name="player" value="{{ i }}">
+                            <button type="submit" class="score-btn">Score</button>
+                        </form>
                     </td>
                 </tr>
-                <tr class="player2">
-                    <td>Second player</td>
-                    <td>0</td>
-                    <td>3</td>
-                    <td>30</td>
-                    <td>
-                        <button class="score-btn">score</button>
-                    </td>
-                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </section>

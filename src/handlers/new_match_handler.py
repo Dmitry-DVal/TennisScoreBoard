@@ -51,11 +51,11 @@ class NewMatchHandler(BaseHandler):
             # Отправка ответа
             start_response("303 See Other",
                            [("Location", f"/match-score?uuid={match.UUID}")])
+            logger.debug(f"303 See Other, /match-score?uuid={match.UUID}")
             return []
         except ValidationError as e:
             logger.error(f"Ошибка валидации: {e.errors()}")
             start_response("400 Bad Request", [("Content-Type", "application/json")])
-            # print(e.errors(include_url=False))
             return [f'{{"error": "{e.errors(include_url=False)}"}}'.encode("utf-8")]
         except IntegrityError as e:
             logger.error("Ошибка в БД: дублирование данных или нарушение связей")
