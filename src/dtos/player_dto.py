@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field, field_validator
 class PlayerDTO(BaseModel):
     name: str = Field(min_length=2, max_length=25,
                       pattern="^[A-Za-zА-Яа-я]+(\s+[A-Za-zА-Яа-я]+)?$")
+    player_number: int = Field(default=None)
 
     @field_validator('name', mode='before')
     @classmethod
