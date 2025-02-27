@@ -61,11 +61,10 @@
                 <!-- 🔹 Динамически заполняем таблицу данными из match -->
                 {% for i in [0, 1] %}
                 <tr class="player{{ i + 1 }}">
-                    <!--                    <td>{{ match.Player1 if i == 0 else match.Player2 }}</td>-->
                     <td>{{ player1_name if i == 0 else player2_name }}</td>
-                    <td>{{ match.Score.get("sets", [0, 0])[i] if match.Score else 0 }}</td>
-                    <td>{{ match.Score.get("games", [0, 0])[i] if match.Score else 0 }}</td>
-                    <td>{{ match.Score.get("points", [0, 0])[i] if match.Score else 0 }}</td>
+                    <td>{{ match_score.get("sets", [0, 0])[i] if match_score else 0 }}</td>
+                    <td>{{ match_score.get("games", [0, 0])[i] if match_score else 0 }}</td>
+                    <td>{{ match_score.get("points", [0, 0])[i] if match_score else 0 }}</td>
                     <td>
                         <!-- 🔹 Форма для обновления счета -->
                         <form method="post" action="/match-score?uuid={{ match.UUID }}">
@@ -98,7 +97,7 @@
             </a>
         </div>
         <div class="image_footer">
-            <a href="https://github.com/Dmitry-DVal" target="_blank">
+            <a href="https://github.com/Dmitry-DVal/TennisScoreBoard" target="_blank">
                 <img class="image_tg" src="../static/images/github_black_green.png" alt="github">
             </a>
         </div>

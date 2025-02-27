@@ -49,7 +49,7 @@ class Set:
         """Сбрасываем счёт сета после победы"""
         self.games = [0, 0]
         self.is_tie_break = False
-        self.game_obj.reset_game()
+        self.game_obj.drop_point()
 
 
 class Game:
