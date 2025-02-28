@@ -1,71 +1,87 @@
-from src.handlers.base_handler import BaseHandler, logger
+import json
+import urllib.parse
+
+from pydantic import ValidationError
+
+from src.dtos.point_winner_dto import PointWinnerDTO
+from src.handlers.base_handler import RequestHandler, logger
 from src.services.match_service import MatchService
 from src.services.player_service import PlayerService
 
 
-class MatchScoreHandler(BaseHandler):
+class MatchScoreHandler(RequestHandler):
     def __init__(self):
         self.match_service = MatchService()
         self.player_service = PlayerService()
 
-    def make_response(self, response_body: str, start_response, status="200 OK"):
-        """Формирует HTTP-ответ"""
-        start_response(status, [("Content-Type", "text/html; charset=utf-8")])
-        return [response_body]
-
-    def handle_request(self, environ, start_response):
-        if environ["REQUEST_METHOD"] == "POST":
-            return self.handle_post(environ, start_response)
-        return self.handle_get(environ, start_response)
-
     def handle_get(self, environ, start_response):
         """Обрабатывает GET-запрос и рендерит страницу матча."""
-        match_id = self.match_service.get_uuid_from_request(environ)
+        match_id = self.get_uuid_from_request(environ)
         match = self.match_service.get_match_by_uuid(match_id)
 
         logger.debug(f"Запрос имен игроков, счета у сервиса для рендеринга страниц")
 
         if not match:
-            response_body = "Match not found"
-            logger.debug("Match not found, 404 Not Found")
-            return self.make_response(response_body,
-                                      start_response,
-                                      status="404 Not Found")
+            return self.error_response(start_response,
+                                       "Match not found",
+                                       "404 Not Found")
 
-        # Получаем имена игроков по их ID
-        player1_name, player2_name = self.player_service.get_players_name_by_id(
-            match.Player1,
-            match.Player2
-        )
-        logger.debug(f"{player1_name, player2_name}"
-                     f"{match.Score}")
+        match_score = self._get_match_score(match)
+        player1_name, player2_name = self._get_player_names(match)
 
         response_body = self.render_template(
             "match_score.html",
             match=match,
+            match_score=match_score,
             player1_name=player1_name,
             player2_name=player2_name
         )
 
-        return self.make_response(response_body, start_response)
+        return self.make_response(start_response, response_body)
 
     def handle_post(self, environ, start_response):
         """Обрабатывает POST-запрос: обновляет счёт и рендерит обновлённую страницу."""
-        match_id = self.match_service.get_uuid_from_request(environ)
-        form_data = self.match_service.get_form_data(environ)
-        # logger.debug(f"form_data = {form_data}")
-        logger.debug(f"match_id = {match_id},"
-                     f"form_data = {form_data}")
+        try:
+            request_body = environ['wsgi.input'].read().decode('utf-8')
+            logger.debug(f"Тело запроса {request_body}")
+            form_data = urllib.parse.parse_qs(request_body)
 
-        if "player" not in form_data:
-            response_body = "Invalid request"
-            logger.debug("Invalid request, 400 Bad Request")
+            # 🔹 Валидация через Pydantic
+            validated_data = PointWinnerDTO(player=form_data.get("player", [""])[0])
+            logger.debug(f"Валидированные данные: {validated_data} - Выиграл очко")
 
-            return self.make_response(response_body, start_response,
+            # Обновляем счёт матча
+            match_id = self.get_uuid_from_request(environ)
+            updated_match = self.match_service.update_match_score(
+                match_id,
+                validated_data.player
+            )
+
+            if not updated_match:
+                return self.make_response("Match not found",
+                                          start_response,
+                                          status="404 Not Found")
+            return self.handle_get(environ, start_response)
+
+        except ValidationError as e:
+            logger.error(f"Ошибка валидации: {e.errors()}")
+            return self.make_response("Invalid request",
+                                      start_response,
                                       status="400 Bad Request")
 
-        updated_match = self.match_service.update_match_score(match_id,
-                                                              form_data["player"])
-        logger.debug(f"updated_match = {updated_match}")
-        if not updated_match:
-            response_body = "Match not found"
+    def error_response(self, start_response, message: str, status: str):
+        """Генерация ошибки"""
+        logger.error(f"Ошибка - {message}, {status}")
+        start_response(status, [("Content-Type", "text/plain")])
+        return [message.encode("utf-8")]
+
+    def _get_match_score(self, match):
+        """Извлекает и преобразует счёт матча."""
+        return json.loads(match.Score) if isinstance(match.Score, str) else match.Score
+
+    def _get_player_names(self, match):
+        """Получает имена игроков по их ID."""
+        return self.player_service.get_players_name_by_id(
+            match.Player1,
+            match.Player2
+        )

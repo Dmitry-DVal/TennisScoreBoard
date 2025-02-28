@@ -1,7 +1,7 @@
 import logging
 
 from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler,
-                      serve_static)
+                      StaticHandler)
 
 logger = logging.getLogger("app_logger")
 
@@ -12,7 +12,7 @@ class Router:
         "/": IndexHandler(),
         "/new-match": NewMatchHandler(),
         "/match-score": MatchScoreHandler(),
-        "/matches": MatchesHandler()
+        "/matches": MatchesHandler(),
     }
 
     @classmethod
@@ -24,7 +24,7 @@ class Router:
         # logger.debug(f"Запрос: {method} {path}")
 
         if path.startswith("/static/"):
-            return serve_static(environ, start_response)
+            return StaticHandler().handle_get(environ, start_response)
 
         handler = cls.routes.get(path)
         if handler:
