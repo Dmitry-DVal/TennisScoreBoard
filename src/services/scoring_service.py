@@ -1,4 +1,5 @@
 import logging
+
 from src.services.match_state import MatchState
 
 logger = logging.getLogger("app_logger")
@@ -13,7 +14,12 @@ class Match:
         self.state.sets[player] += 1
         logger.debug(f"Игрок {player} выиграл сет")
         logger.debug(f"Счет матча: {self.state.to_dict()}")
-        return self.is_match_over(player)
+
+        if self.state.sets[player] == 2:
+            self.state.is_match_over = True  # Завершаем матч
+            logger.debug(f"Матч завершён! Победитель: Игрок {player}")
+
+        return self.state.is_match_over
 
     def is_match_over(self, player: int) -> bool:
         return self.state.sets[player] == 2
@@ -66,6 +72,11 @@ class Game:
         self.state.points = [0, 0]
 
     def add_point(self, player: int) -> None:
+
+        if self.state.is_match_over:
+            logger.warning(f"Игра окончена. Игрок {player} не может получить очко.")
+            return
+
         if self.state.is_tie_break:
             self.play_tie_break(player)
         else:
@@ -74,7 +85,8 @@ class Game:
     def play_tie_break(self, player: int) -> None:
         self.state.points[player] += 1
         logger.debug(f"Счет Тайбрейка: {self.state.to_dict()}")
-        if self.state.points[player] >= 7 and (self.state.points[player] - self.state.points[1 - player]) >= 2:
+        if self.state.points[player] >= 7 and (
+                self.state.points[player] - self.state.points[1 - player]) >= 2:
             self.set_obj.add_game(player)
 
     def play_game(self, player: int) -> None:
@@ -99,6 +111,3 @@ class Game:
             self.drop_point()
         elif self.state.points == [40, 40]:
             self.state.points[player] = "ad"
-
-
-

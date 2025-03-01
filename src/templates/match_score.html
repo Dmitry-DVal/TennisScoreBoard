@@ -58,19 +58,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- 🔹 Динамически заполняем таблицу данными из match -->
                 {% for i in [0, 1] %}
                 <tr class="player{{ i + 1 }}">
-                    <td>{{ player1_name if i == 0 else player2_name }}</td>
+                    <td>
+                        {{ player1_name if i == 0 else player2_name }}
+                        {% if match.Winner == (match.Player1 if i == 0 else match.Player2) %} 🏆
+                        {% endif %}
+                    </td>
                     <td>{{ match_score.get("sets", [0, 0])[i] if match_score else 0 }}</td>
                     <td>{{ match_score.get("games", [0, 0])[i] if match_score else 0 }}</td>
                     <td>{{ match_score.get("points", [0, 0])[i] if match_score else 0 }}</td>
                     <td>
-                        <!-- 🔹 Форма для обновления счета -->
+                        {% if not match_score.get("is_match_over", False) %}
                         <form method="post" action="/match-score?uuid={{ match.UUID }}">
                             <input type="hidden" name="player" value="{{ i }}">
                             <button type="submit" class="score-btn">Score</button>
                         </form>
+                        {% else %}
+                        <span>Game Over</span>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

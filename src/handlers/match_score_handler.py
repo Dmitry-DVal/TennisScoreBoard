@@ -46,7 +46,6 @@ class MatchScoreHandler(RequestHandler):
             logger.debug(f"Тело запроса {request_body}")
             form_data = urllib.parse.parse_qs(request_body)
 
-            # 🔹 Валидация через Pydantic
             validated_data = PointWinnerDTO(player=form_data.get("player", [""])[0])
             logger.debug(f"Валидированные данные: {validated_data} - Выиграл очко")
 
