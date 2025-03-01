@@ -22,6 +22,7 @@ class MatchService:
             db_session.refresh(match)  # Обновляем объект, чтобы он не был "detached"
         return match
 
+
     def get_match_by_uuid(self, match_id: str) -> MatchesOrm | None:
         """Извлекает матч из БД по UUID и преобразует `Score` в словарь"""
         with session() as db_session:
@@ -33,7 +34,6 @@ class MatchService:
             return match  # Явно возвращаем match, даже если None
 
     def update_match_score(self, match_id: str, player: str) -> MatchesOrm | None:
-        """Обновляет счёт матча, добавляя очко игроку."""
         with session() as db_session:
             match = db_session.query(MatchesOrm).filter_by(UUID=match_id).first()
             if not match:
@@ -43,27 +43,11 @@ class MatchService:
 
             match_score = json.loads(match.Score) if isinstance(match.Score,
                                                                 str) else match.Score
-
-            match_obj = self.load_match_from_score(match_score)
+            match_obj = Match.from_dict(match_score)
 
             match_obj.set_obj.game_obj.add_point(player)
-
-            self.update_score_in_db(match_score, match_obj)
 
             db_session.query(MatchesOrm).filter_by(UUID=match_id).update(
                 {"Score": match_score})
             db_session.commit()
             return match
-
-    def load_match_from_score(self, match_score: dict) -> Match:
-        """Создает объект матча, загружает сохраненный счет."""
-        match_obj = Match()
-        match_obj.sets = match_score["sets"]
-        match_obj.set_obj.games = match_score["games"]
-        match_obj.set_obj.game_obj.scores = match_score["points"]
-        return match_obj
-
-    def update_score_in_db(self, match_score: dict, match_obj: Match) -> None:
-        match_score["sets"] = match_obj.sets
-        match_score["games"] = match_obj.set_obj.games
-        match_score["points"] = match_obj.set_obj.game_obj.scores
