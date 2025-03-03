@@ -58,14 +58,14 @@
             {% for match in matches %}
             <tr>
                 <td>
-                    {{ match.player1_name }}
-                    {% if match.Winner == match.Player1 %} 🏆 {% endif %}
+                    {{ match[0] }}
+                    {% if match[2] == match[0] %} 🏆 {% endif %}
                 </td>
                 <td>
-                    {{ match.player2_name }}
-                    {% if match.Winner == match.Player2 %} 🏆 {% endif %}
+                    {{ match[1] }}
+                    {% if match[2] == match[1] %} 🏆 {% endif %}
                 </td>
-                <td>{{ match.score.get("sets", [0, 0]) }}</td>
+                <td>{{ match[3] }}</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -100,3 +100,5 @@
 </footer>
 </body>
 </html>
+
+
