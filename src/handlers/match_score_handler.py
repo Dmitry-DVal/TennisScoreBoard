@@ -2,6 +2,7 @@ import json
 import urllib.parse
 
 from pydantic import ValidationError
+from sqlalchemy.exc import IntegrityError
 
 from src.dtos.point_winner_dto import PointWinnerDTO
 from src.handlers.base_handler import RequestHandler, logger
@@ -57,22 +58,20 @@ class MatchScoreHandler(RequestHandler):
             )
 
             if not updated_match:
-                return self.make_response("Match not found",
-                                          start_response,
-                                          status="404 Not Found")
+                return self.error_response(start_response, "Match not found",
+                                           "404 Not Found")
+
             return self.handle_get(environ, start_response)
 
-        except ValidationError as e:
-            logger.error(f"Ошибка валидации: {e.errors()}")
-            return self.make_response("Invalid request",
-                                      start_response,
-                                      status="400 Bad Request")
-
-    def error_response(self, start_response, message: str, status: str):
-        """Генерация ошибки"""
-        logger.error(f"Ошибка - {message}, {status}")
-        start_response(status, [("Content-Type", "text/plain")])
-        return [message.encode("utf-8")]
+        except ValidationError:
+            return self.error_response(start_response, "Ошибка валидации",
+                                       "400 Bad Request")
+        except IntegrityError:
+            return self.error_response(start_response, "Ошибка в БД",
+                                       "500 Internal Server Error")
+        except Exception:
+            return self.error_response(start_response, "Внутренняя ошибка",
+                                       "500 Internal Server Error")
 
     def _get_match_score(self, match):
         """Извлекает и преобразует счёт матча."""

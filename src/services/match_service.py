@@ -1,12 +1,12 @@
-import json
+import logging
 from uuid import uuid4
 
 from src.database import session
 from src.models.match_model import MatchesOrm
 from src.services.scoring_service import Match
 
-import logging
 logger = logging.getLogger("app_logger")
+
 
 class MatchService:
     def create_match(self, id_first_player: int, id_second_player: int) -> MatchesOrm:
@@ -28,10 +28,6 @@ class MatchService:
         """Извлекает матч из БД по UUID и преобразует `Score` в словарь"""
         with session() as db_session:
             match = db_session.query(MatchesOrm).filter_by(UUID=match_id).first()
-            if match and isinstance(match.Score,
-                                    str):
-                match.Score = json.loads(
-                    match.Score)
             return match  # Явно возвращаем match, даже если None
 
     def update_match_score(self, match_id: str, player: str) -> MatchesOrm | None:
@@ -40,18 +36,17 @@ class MatchService:
             if not match:
                 return None
 
-            player = int(player)
-
-            match_score = json.loads(match.Score) if isinstance(match.Score,
-                                                                str) else match.Score
-            match_obj = Match.from_dict(match_score)
-
-            if match_obj.state.is_match_over:
-                return match  # Возвращаем завершённый матч без изменений
+            match_obj = Match.from_dict(match.Score)
 
             match_obj.set_obj.game_obj.add_point(player)
 
-            # Если матч завершён, обновляем БД
+            self.check_match_completion(match_id, player, match_obj)
+
+            return match
+
+    def check_match_completion(self, match_id: str, player: str, match_obj):
+        with session() as db_session:
+            match = db_session.query(MatchesOrm).filter_by(UUID=match_id).first()
             if match_obj.state.is_match_over:
                 winner_id = match.Player1 if player == 0 else match.Player2  # Находим реальный ID игрока
                 db_session.query(MatchesOrm).filter_by(UUID=match_id).update(
@@ -61,6 +56,4 @@ class MatchService:
                 db_session.query(MatchesOrm).filter_by(UUID=match_id).update(
                     {"Score": match_obj.to_dict()}
                 )
-
             db_session.commit()
-            return match
