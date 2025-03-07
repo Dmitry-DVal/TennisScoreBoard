@@ -7,10 +7,10 @@ html, body {
 }
 
 main {
-    flex: 1; /* Основной контент занимает всё доступное пространство */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Центрирование контента по вертикали */
+    justify-content: center;
 }
 
 
@@ -29,7 +29,6 @@ header {
 }
 
 .navigation {
-    /*Навигацию перенести на центр, сделать другой цвета*/
     display: flex;
     margin: auto;
     justify-content: flex-end;
@@ -64,7 +63,7 @@ header {
 }
 
 .word {
-    display: flex; /* Располагает буквы в строку */
+    display: flex;
     margin: 15px;
     font-size: 36px;
 }
@@ -137,33 +136,32 @@ header {
 
 footer {
     background-image: linear-gradient(white, #007764);
-    /*background-image: linear-gradient(black, #007764);*/
-    display: flex; /* Убедитесь, что футер тоже flex-контейнер */
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center; /* Центрирование по вертикали */
-    height: 72px; /* Высота футера */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
 }
 
 footer .content {
     display: flex;
-    justify-content: center; /* Центрирование по горизонтали */
-    align-items: center; /* Центрирование по вертикали */
-    gap: 15px; /* Расстояние между иконками */
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
     align-content: center;
 }
 
 .image_footer {
-    margin: 0; /* Убираем ненужные отступы */
+    margin: 0;
 }
 
 .image_footer img {
-    width: 20px; /* Устанавливаем размер иконок */
+    width: 20px;
     height: 20px;
     transition: font 0.3s ease, transform 0.3s ease;
 }
 
 .image_footer img :hover {
-    width: 40px; /* Устанавливаем размер иконок */
+    width: 40px;
     height: 40px;
 }
 
@@ -315,3 +313,52 @@ th {
     }
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.page-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    text-decoration: none;
+    color: #007764;
+    border: 1px solid #007764;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+.page-link:hover {
+    background-color: #007764;
+    color: white;
+    transform: scale(1.1);
+}
+
+.page-link.current {
+    background-color: #007764;
+    color: white;
+    font-weight: bold;
+    cursor: default;
+}
+
+.page-link.prev, .page-link.next {
+    width: 40px;
+    font-weight: bold;
+}
+
+.page-link.prev:hover, .page-link.next:hover {
+    background-color: #00a881;
+}
+
+.dots {
+    color: #007764;
+    font-size: 18px;
+    margin: 0 5px;
+}

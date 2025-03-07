@@ -1,6 +1,7 @@
 import logging
 from uuid import uuid4
 
+from sqlalchemy import func
 from sqlalchemy.orm import aliased
 
 from src.database import session
@@ -47,7 +48,7 @@ class MatchService:
 
             return match
 
-    def check_match_completion(self, match_id: str, player: str, match_obj):
+    def check_match_completion(self, match_id: str, player: str, match_obj) -> None:
         with session() as db_session:
             match = db_session.query(MatchesOrm).filter_by(UUID=match_id).first()
             if match_obj.state.is_match_over:
@@ -61,31 +62,42 @@ class MatchService:
                 )
             db_session.commit()
 
-    def get_completed_matches(self):
-        """Получает все завершенные матчи."""
-        with (session() as db_session):
-            Player1 = aliased(PlayerOrm)
-            Player2 = aliased(PlayerOrm)
-            Winner = aliased(PlayerOrm)
 
-            matches = db_session.query(
-                Player1.Name,
-                Player2.Name,
-                Winner.Name,
-                MatchesOrm.Score['sets']).join(
-                Player1, MatchesOrm.Player1 == Player1.ID).join(
-                Player2, MatchesOrm.Player2 == Player2.ID).join(
-                Winner, MatchesOrm.Winner == Winner.ID).filter(
-                MatchesOrm.Winner.isnot(None)).all()
-            logger.debug(type(matches))
-            print()
-            print(matches[0],
-                  type(matches[0]))  # ...  <class 'sqlalchemy.engine.row.Row'>
-            print()
-            print(matches[0][0])  # Zhirna Mraz
-            print(matches[0][1])  # Dima
-            print(matches[0][2])  # Dima
-            print(matches[0][3])  # [1, 2]
-            print(len(matches))
+    def build_match_query(self, db_session, player_name=None):
+        """Формирует базовый SQL-запрос для поиска завершённых матчей."""
+        Player1 = aliased(PlayerOrm)
+        Player2 = aliased(PlayerOrm)
+        Winner = aliased(PlayerOrm)
 
-            return matches
+        query = db_session.query(
+            Player1.Name.label("player1"),
+            Player2.Name.label("player2"),
+            Winner.Name.label("winner"),
+            MatchesOrm.Score["sets"].label("score_sets")
+        ).join(Player1, MatchesOrm.Player1 == Player1.ID
+               ).join(Player2, MatchesOrm.Player2 == Player2.ID
+                      ).join(Winner, MatchesOrm.Winner == Winner.ID
+                             ).filter(MatchesOrm.Winner.isnot(None))
+
+        # 🔥 Исправляем поиск по имени (учитываем регистр и частичное совпадение)
+        if player_name:
+            player_name = f"%{player_name.lower()}%"  # 👈 Исправлено
+            query = query.filter(
+                (func.lower(Player1.Name).like(player_name)) |
+                (func.lower(Player2.Name).like(player_name))
+            )
+
+        return query
+
+    def paginate_query(self, query, page, per_page):
+        """Добавляет пагинацию к SQL-запросу."""
+        total_matches = query.count()
+        total_pages = max(1, -(-total_matches // per_page))  # Округляем вверх
+        matches = query.limit(per_page).offset((page - 1) * per_page).all()
+        return matches, total_pages
+
+    def get_completed_matches(self, player_name=None, page=1, per_page=5):
+        """Возвращает завершенные матчи с поиском и пагинацией."""
+        with session() as db_session:
+            query = self.build_match_query(db_session, player_name)
+            return self.paginate_query(query, page, per_page)
