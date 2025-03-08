@@ -1,7 +1,8 @@
 import logging
 
 from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler,
-                      StaticHandler)
+                      StaticHandler, RequestHandler)
+from src.exceptions import NotFoundError
 
 logger = logging.getLogger("app_logger")
 
@@ -31,6 +32,5 @@ class Router:
             logger.info(f"Запрос {method}: {path}")
             return handler.handle_request(environ, start_response)
         else:
-            response_body = b"404 Not Found"
-            start_response("404 Not Found", [("Content-Type", "text/plain")])
-            return [response_body]
+            return RequestHandler().handle_exception(start_response, NotFoundError(path))
+

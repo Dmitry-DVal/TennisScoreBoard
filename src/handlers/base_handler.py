@@ -5,6 +5,7 @@ from abc import abstractmethod, ABC
 from jinja2 import Environment, FileSystemLoader
 
 from src.config import TEMPLATES_DIR
+from src.exceptions import MethodNotAllowed
 
 logger = logging.getLogger("app_logger")
 
@@ -37,7 +38,10 @@ class RequestHandler(BaseHandler):
         method = environ.get("REQUEST_METHOD", "GET")
         if method == "POST":
             return self.handle_post(environ, start_response)
-        return self.handle_get(environ, start_response)
+        elif method == "GET":
+            return self.handle_get(environ, start_response)
+        else:
+            return self.handle_exception(start_response, MethodNotAllowed(method))
 
     def get_uuid_from_request(self, environ) -> str | None:
         """Получает UUID из GET-параметров"""
@@ -45,11 +49,18 @@ class RequestHandler(BaseHandler):
             urllib.parse.parse_qs(environ.get("QUERY_STRING", "")).get("uuid", [None])[
                 0]
 
-    @abstractmethod
+    def handle_exception(self, start_response, error: MethodNotAllowed):
+        """Централизованная обработка ошибок"""
+        logger.error(f"Ошибка {error.status_code}: {error}")
+
+        response_body = self.render_template("error.html", error_message=error.message)
+        return self.make_response(start_response, response_body, error.status_code)
+
+    # @abstractmethod
     def handle_get(self, environ, start_response):
         pass
 
-    @abstractmethod
+    # @abstractmethod
     def handle_post(self, environ, start_response):
         pass
 
