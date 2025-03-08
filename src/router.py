@@ -22,8 +22,6 @@ class Router:
         path = environ.get("PATH_INFO", "/")
         method = environ.get("REQUEST_METHOD", "GET")
 
-        # logger.debug(f"Запрос: {method} {path}")
-
         if path.startswith("/static/"):
             return StaticHandler().handle_get(environ, start_response)
 
@@ -32,5 +30,5 @@ class Router:
             logger.info(f"Запрос {method}: {path}")
             return handler.handle_request(environ, start_response)
         else:
-            return RequestHandler().handle_exception(start_response, NotFoundError(path))
-
+            return RequestHandler().handle_exception(start_response,
+                                                     NotFoundError(path))

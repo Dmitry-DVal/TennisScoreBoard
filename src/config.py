@@ -17,7 +17,6 @@ class Settings(BaseSettings):
 
     @property
     def DATABASE_URL_pymysql(self):
-        # "mysql+pymysql://root:mysql@localhost:3306
         dsn = f"mysql+pymysql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         logger.info(f"DSN configuration {dsn}")
         return dsn

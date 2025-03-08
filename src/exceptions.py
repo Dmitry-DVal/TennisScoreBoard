@@ -15,11 +15,13 @@ class MethodNotAllowed(AppError):
         message = f'Method {method} Not Allowed.'
         super().__init__(message)
 
+
 class NotFoundError(AppError):
     def __init__(self, path, *args):
         self.status_code = "404 Not Found"
         message = f'Requested path "{path}" was not found.'
         super().__init__(message)
+
 
 class DateValidationError(AppError):
     """Validation error(400)"""
@@ -29,9 +31,11 @@ class DateValidationError(AppError):
         message = f'Data validation error. {data}.'
         super().__init__(message)
 
+
 class DatabaseError(AppError):
     """Database error(500)"""
-    def __init__(self, data, *args):
+
+    def __init__(self, *args):
         self.status_code = "500 Internal Server Error"
         message = 'Database error.'
         super().__init__(message)

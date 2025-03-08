@@ -1,10 +1,9 @@
 import urllib.parse
 
 from pydantic import ValidationError
-from sqlalchemy.exc import IntegrityError
 
 from src.dtos.player_dto import PlayerDTO
-from src.exceptions import DateValidationError, AppError, DatabaseError
+from src.exceptions import DateValidationError
 from src.handlers.base_handler import RequestHandler, logger
 from src.services.match_service import MatchService
 from src.services.player_service import PlayerService
@@ -17,6 +16,7 @@ class NewMatchHandler(RequestHandler):
         response_body = self.render_template("new_match.html")
         return self.make_response(start_response, response_body)
 
+    @RequestHandler.exception_handler
     def handle_post(self, environ, start_response):
         try:
             request_body = environ['wsgi.input'].read().decode('utf-8')
@@ -24,18 +24,16 @@ class NewMatchHandler(RequestHandler):
             data = urllib.parse.parse_qs(request_body)
 
             player1_dto, player2_dto = self._validate_players(data)
+            if player1_dto == player2_dto:
+                return self.handle_exception(start_response, DateValidationError(data))
 
             player1, player2 = self._get_or_create_players(player1_dto, player2_dto)
 
             return self._create_and_redirect(player1, player2, start_response)
 
         except ValidationError:
-            return self.handle_exception(start_response, DateValidationError(data))
-
-        except IntegrityError:
-            return self.handle_exception(start_response, DatabaseError())
-        except Exception:
-            return self.handle_exception(start_response, AppError())
+            return self.handle_exception(start_response, DateValidationError(
+                'first_player = second_player'))
 
     def redirect(self, start_response, location: str):
         """Редирект на другую страницу"""
@@ -47,8 +45,10 @@ class NewMatchHandler(RequestHandler):
         """Валидирует данные игроков."""
         first_player = data.get("first_player", [""])[0]
         second_player = data.get("second_player", [""])[0]
+
         player1 = PlayerDTO(name=first_player)
         player2 = PlayerDTO(name=second_player)
+
         logger.info(f"Валидация прошла успешно: {repr(player1)}, {repr(player2)}")
         return player1, player2
 

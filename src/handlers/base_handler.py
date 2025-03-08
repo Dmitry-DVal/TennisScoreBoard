@@ -3,9 +3,10 @@ import urllib.parse
 from abc import abstractmethod, ABC
 
 from jinja2 import Environment, FileSystemLoader
+from sqlalchemy.exc import IntegrityError
 
 from src.config import TEMPLATES_DIR
-from src.exceptions import AppError, MethodNotAllowed
+from src.exceptions import AppError, MethodNotAllowed, DatabaseError
 
 logger = logging.getLogger("app_logger")
 
@@ -22,6 +23,14 @@ class BaseHandler(ABC):
     @abstractmethod
     def handle_request(self, environ, start_response):
         """Общий метод, который должны переопределять все обработчики"""
+        pass
+
+    @abstractmethod
+    def handle_get(self, environ, start_response):
+        pass
+
+    @abstractmethod
+    def handle_post(self, environ, start_response):
         pass
 
     def make_response(self, start_response, body: bytes, status="200 OK",
@@ -56,16 +65,21 @@ class RequestHandler(BaseHandler):
         response_body = self.render_template("error.html", error_message=error.message)
         return self.make_response(start_response, response_body, error.status_code)
 
-    # @abstractmethod
+    def exception_handler(method):
+        """Декоратор для обработки общих ошибок."""
+
+        def wrapper(self, environ, start_response, *args, **kwargs):
+            try:
+                return method(self, environ, start_response, *args, **kwargs)
+            except IntegrityError:
+                return self.handle_exception(start_response, DatabaseError())
+            except Exception:
+                return self.handle_exception(start_response, AppError())
+
+        return wrapper
+
     def handle_get(self, environ, start_response):
         pass
 
-    # @abstractmethod
     def handle_post(self, environ, start_response):
         pass
-
-    def error_response(self, start_response, message: str, status: str):
-        """Генерация ошибки"""
-        logger.error(f"Ошибка - {message}, {status}")
-        start_response(status, [("Content-Type", "text/plain")])
-        return [message.encode("utf-8")]

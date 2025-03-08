@@ -2,10 +2,9 @@ import json
 import urllib.parse
 
 from pydantic import ValidationError
-from sqlalchemy.exc import IntegrityError
 
 from src.dtos.point_winner_dto import PointWinnerDTO
-from src.exceptions import DateValidationError, AppError, DatabaseError
+from src.exceptions import DateValidationError
 from src.handlers.base_handler import RequestHandler, logger
 from src.services.match_service import MatchService
 from src.services.player_service import PlayerService
@@ -26,7 +25,6 @@ class MatchScoreHandler(RequestHandler):
         if not match:
             return self.handle_exception(start_response, DateValidationError(match_id))
 
-
         match_score = self._get_match_score(match)
         player1_name, player2_name = self._get_player_names(match)
 
@@ -40,6 +38,7 @@ class MatchScoreHandler(RequestHandler):
 
         return self.make_response(start_response, response_body)
 
+    @RequestHandler.exception_handler
     def handle_post(self, environ, start_response):
         """Обрабатывает POST-запрос: обновляет счёт и рендерит обновлённую страницу."""
         try:
@@ -58,19 +57,13 @@ class MatchScoreHandler(RequestHandler):
             )
 
             if not updated_match:
-                return self.handle_exception(start_response, DateValidationError(match_id))
-
+                return self.handle_exception(start_response,
+                                             DateValidationError(match_id))
 
             return self.handle_get(environ, start_response)
 
         except ValidationError:
             return self.handle_exception(start_response, DateValidationError(data))
-
-        except IntegrityError:
-            return self.handle_exception(start_response, DatabaseError())
-
-        except Exception:
-            return self.handle_exception(start_response, AppError())
 
     def _get_match_score(self, match):
         """Извлекает и преобразует счёт матча."""
