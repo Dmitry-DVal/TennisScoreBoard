@@ -4,9 +4,8 @@ from pydantic import ValidationError
 
 from src.dtos.player_dto import PlayerDTO
 from src.exceptions import DateValidationError
-from src.handlers.base_handler import RequestHandler, logger
-from src.services.match_service import MatchService
-from src.services.player_service import PlayerService
+from src.handlers import RequestHandler, logger
+from src.services import MatchService, PlayerService
 
 
 class NewMatchHandler(RequestHandler):
@@ -24,8 +23,9 @@ class NewMatchHandler(RequestHandler):
             data = urllib.parse.parse_qs(request_body)
 
             player1_dto, player2_dto = self._validate_players(data)
-            if player1_dto == player2_dto:
-                return self.handle_exception(start_response, DateValidationError(data))
+            if player1_dto.name == player2_dto.name:
+                logger.warning(f"Имена игроков не могу быть одинаковыми. {player1_dto.name }, {player2_dto.name }")
+                return self.handle_exception(start_response, DateValidationError(f"Игроки не могут быть одинаковыми. {data}"))
 
             player1, player2 = self._get_or_create_players(player1_dto, player2_dto)
 

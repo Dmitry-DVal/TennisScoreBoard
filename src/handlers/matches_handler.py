@@ -3,8 +3,8 @@ import urllib.parse
 from sqlalchemy.exc import ProgrammingError
 
 from src.exceptions import DateValidationError, MethodNotAllowed
-from src.handlers.base_handler import RequestHandler, logger
-from src.services.match_service import MatchService
+from src.handlers import RequestHandler, logger
+from src.services import MatchService
 
 
 class MatchesHandler(RequestHandler):

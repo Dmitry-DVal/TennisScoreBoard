@@ -15,7 +15,7 @@ https://zhukovsd.github.io/python-backend-learning-course/projects/tennis-scoreb
 - Сверстать простой веб-интерфейс без сторонних библиотек
 - Закрепление знакомства с архитектурным паттерном MVC(S)
 
-Для запуска приложения - запустить app.py (сделать детальную инструкцию)
+Для запуска приложения - запустить server.py (сделать детальную инструкцию)
 
 ### Структура проекта
 
@@ -26,6 +26,7 @@ project/
 │   ├── dtos/                  # Data Transfer Objects
 │   │   ├── __init__.py
 │   │   ├── player_dto.py
+│   │   ├── point_winner_dto.py
 │   ├── handlers/              # Обработчики запросов
 │   │   ├── __init__.py
 │   │   ├── base_handler.py
@@ -45,6 +46,7 @@ project/
 │   │   ├── match_service.py   # Сервис матча
 │   │   ├── player_service.py  # Сервис игрока
 │   │   ├── scoring_service.py # Модель подсчета очков
+│   │   ├── match_state.py     # Работа с состоянием матча
 │   ├── static/                # Статика (CSS, изображения)
 │   │   ├── style.css
 │   │   ├── images/            # Изображения для сайта
@@ -53,8 +55,8 @@ project/
 │   ├── templates/             # HTML-шаблоны 
 │   │   ├── index.html
 │   │   ├── new_match.html
-│   │   ├── match_score
-│   │   ├── completed_matches
+│   │   ├── error.html
+│   │   ├── etc
 │   ├── __init__.py
 │   ├── config.py             # Конфигурация проекта
 │   ├── database.py           # Конфигурация базы данных
@@ -65,10 +67,12 @@ project/
 │   ├── __init__.py
 │   ├── test_scoring_service.py
 ├── .env                      # Настройки подключения к БД
+├── __init__.py
 ├── alembic.ini               # Параметры конфигурации alembic
 ├── pytest.ini                # Параметры конфигурации pytest
 ├── README                    # О проекте
 ├── requirements              # Зависимости
+
 ```
 
 ### Функционал приложения
@@ -88,7 +92,7 @@ project/
 - MySQL
 - SQLAlchemy, alembic
 - HTML/CSS, блочная вёрстка
-- pytest. Юнит тестирование
+- pytest
 - Pydantic
 
 ### Автор

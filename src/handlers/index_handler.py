@@ -1,5 +1,5 @@
 from src.exceptions import MethodNotAllowed
-from src.handlers.base_handler import RequestHandler
+from src.handlers import RequestHandler
 
 
 class IndexHandler(RequestHandler):

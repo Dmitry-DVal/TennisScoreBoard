@@ -6,8 +6,8 @@ from pydantic import ValidationError
 from src.dtos.point_winner_dto import PointWinnerDTO
 from src.exceptions import DateValidationError
 from src.handlers.base_handler import RequestHandler, logger
-from src.services.match_service import MatchService
-from src.services.player_service import PlayerService
+from src.services import MatchService, PlayerService
+
 
 
 class MatchScoreHandler(RequestHandler):
