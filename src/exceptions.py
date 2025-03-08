@@ -21,3 +21,17 @@ class NotFoundError(AppError):
         message = f'Requested path "{path}" was not found.'
         super().__init__(message)
 
+class DateValidationError(AppError):
+    """Validation error(400)"""
+
+    def __init__(self, data, *args):
+        self.status_code = "400 Bad Request"
+        message = f'Data validation error. {data}.'
+        super().__init__(message)
+
+class DatabaseError(AppError):
+    """Database error(500)"""
+    def __init__(self, data, *args):
+        self.status_code = "500 Internal Server Error"
+        message = 'Database error.'
+        super().__init__(message)

@@ -4,6 +4,7 @@ from pydantic import ValidationError
 from sqlalchemy.exc import IntegrityError
 
 from src.dtos.player_dto import PlayerDTO
+from src.exceptions import DateValidationError, AppError, DatabaseError
 from src.handlers.base_handler import RequestHandler, logger
 from src.services.match_service import MatchService
 from src.services.player_service import PlayerService
@@ -28,15 +29,13 @@ class NewMatchHandler(RequestHandler):
 
             return self._create_and_redirect(player1, player2, start_response)
 
-        except ValidationError as e:
-            return self.error_response(start_response, "Ошибка валидации",
-                                       "400 Bad Request")
+        except ValidationError:
+            return self.handle_exception(start_response, DateValidationError(data))
+
         except IntegrityError:
-            return self.error_response(start_response, "Ошибка в БД",
-                                       "500 Internal Server Error")
+            return self.handle_exception(start_response, DatabaseError())
         except Exception:
-            return self.error_response(start_response, "Внутренняя ошибка",
-                                       "500 Internal Server Error")
+            return self.handle_exception(start_response, AppError())
 
     def redirect(self, start_response, location: str):
         """Редирект на другую страницу"""

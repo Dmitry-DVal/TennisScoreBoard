@@ -2,6 +2,7 @@ import urllib.parse
 
 from src.handlers.base_handler import RequestHandler, logger
 from src.services.match_service import MatchService
+from src.exceptions import DateValidationError
 
 
 class MatchesHandler(RequestHandler):
@@ -16,7 +17,10 @@ class MatchesHandler(RequestHandler):
         logger.debug(f"Полученные данные в GET {data}")
 
         player_name = data.get('filter_by_player_name', [None])[0]
-        page = int(data.get('page', [1])[0])
+        page = data.get('page', [1])[0]
+        if not isinstance(page, int) or page < 0:
+            return self.handle_exception(start_response, DateValidationError(page))
+
         logger.debug(f"Фильтр по игроку: {player_name}, Страница: {page}")
 
         matches, total_pages = self.match_service.get_completed_matches(

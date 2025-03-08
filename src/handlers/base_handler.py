@@ -5,7 +5,7 @@ from abc import abstractmethod, ABC
 from jinja2 import Environment, FileSystemLoader
 
 from src.config import TEMPLATES_DIR
-from src.exceptions import MethodNotAllowed
+from src.exceptions import AppError, MethodNotAllowed
 
 logger = logging.getLogger("app_logger")
 
@@ -49,7 +49,7 @@ class RequestHandler(BaseHandler):
             urllib.parse.parse_qs(environ.get("QUERY_STRING", "")).get("uuid", [None])[
                 0]
 
-    def handle_exception(self, start_response, error: MethodNotAllowed):
+    def handle_exception(self, start_response, error: AppError):
         """Централизованная обработка ошибок"""
         logger.error(f"Ошибка {error.status_code}: {error}")
 

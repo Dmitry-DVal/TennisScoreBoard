@@ -1,3 +1,4 @@
+from src.exceptions import MethodNotAllowed
 from src.handlers.base_handler import RequestHandler
 
 
@@ -9,5 +10,4 @@ class IndexHandler(RequestHandler):
         return self.make_response(start_response, response_body)
 
     def handle_post(self, environ, start_response):
-        return self.make_response(start_response, b"Method Not Allowed",
-                                  "405 Method Not Allowed")
+        return self.handle_exception(start_response, MethodNotAllowed("POST"))

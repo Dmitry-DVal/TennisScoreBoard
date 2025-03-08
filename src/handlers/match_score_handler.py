@@ -5,6 +5,7 @@ from pydantic import ValidationError
 from sqlalchemy.exc import IntegrityError
 
 from src.dtos.point_winner_dto import PointWinnerDTO
+from src.exceptions import DateValidationError, AppError, DatabaseError
 from src.handlers.base_handler import RequestHandler, logger
 from src.services.match_service import MatchService
 from src.services.player_service import PlayerService
@@ -23,9 +24,8 @@ class MatchScoreHandler(RequestHandler):
         logger.debug(f"Запрос имен игроков, счета у сервиса для рендеринга страниц")
 
         if not match:
-            return self.error_response(start_response,
-                                       "Match not found",
-                                       "404 Not Found")
+            return self.handle_exception(start_response, DateValidationError(match_id))
+
 
         match_score = self._get_match_score(match)
         player1_name, player2_name = self._get_player_names(match)
@@ -45,9 +45,9 @@ class MatchScoreHandler(RequestHandler):
         try:
             request_body = environ['wsgi.input'].read().decode('utf-8')
             logger.debug(f"Тело запроса {request_body}")
-            form_data = urllib.parse.parse_qs(request_body)
+            data = urllib.parse.parse_qs(request_body)
 
-            validated_data = PointWinnerDTO(player=form_data.get("player", [""])[0])
+            validated_data = PointWinnerDTO(player=data.get("player", [""])[0])
             logger.debug(f"Валидированные данные: {validated_data} - Выиграл очко")
 
             # Обновляем счёт матча
@@ -58,20 +58,19 @@ class MatchScoreHandler(RequestHandler):
             )
 
             if not updated_match:
-                return self.error_response(start_response, "Match not found",
-                                           "404 Not Found")
+                return self.handle_exception(start_response, DateValidationError(match_id))
+
 
             return self.handle_get(environ, start_response)
 
         except ValidationError:
-            return self.error_response(start_response, "Ошибка валидации",
-                                       "400 Bad Request")
+            return self.handle_exception(start_response, DateValidationError(data))
+
         except IntegrityError:
-            return self.error_response(start_response, "Ошибка в БД",
-                                       "500 Internal Server Error")
+            return self.handle_exception(start_response, DatabaseError())
+
         except Exception:
-            return self.error_response(start_response, "Внутренняя ошибка",
-                                       "500 Internal Server Error")
+            return self.handle_exception(start_response, AppError())
 
     def _get_match_score(self, match):
         """Извлекает и преобразует счёт матча."""
