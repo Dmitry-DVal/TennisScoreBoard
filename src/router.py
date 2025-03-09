@@ -8,7 +8,7 @@ logger = logging.getLogger("app_logger")
 
 
 class Router:
-    """Маршрутизатор запросов."""
+    """Request Router"""
     routes = {
         "/": IndexHandler(),
         "/new-match": NewMatchHandler(),
@@ -18,7 +18,7 @@ class Router:
 
     @classmethod
     def application(cls, environ, start_response):
-        """Вызов нужного обработчика по URL."""
+        """Call the desired handler by URL."""
         path = environ.get("PATH_INFO", "/")
         method = environ.get("REQUEST_METHOD", "GET")
 
@@ -27,7 +27,7 @@ class Router:
 
         handler = cls.routes.get(path)
         if handler:
-            logger.info(f"Запрос {method}: {path}")
+            logger.info(f"Request {method}: {path}")
             return handler.handle_request(environ, start_response)
         else:
             return RequestHandler().handle_exception(start_response,

@@ -10,4 +10,4 @@ class Base(DeclarativeBase):
     pass
 
 
-session = sessionmaker(bind=engine, expire_on_commit=False)  # expire_on_commit=False
+session = sessionmaker(bind=engine, expire_on_commit=False)

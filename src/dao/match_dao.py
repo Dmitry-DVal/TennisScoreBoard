@@ -6,14 +6,13 @@ from sqlalchemy.orm import aliased
 
 from src.database import session
 from src.models import MatchesOrm, PlayerOrm
-from src.services.scoring_service import Match
+from src.services import Match
 
 logger = logging.getLogger("app_logger")
 
 
 class MatchDAO:
     def create_match(self, id_first_player: int, id_second_player: int) -> MatchesOrm:
-        """Создает матч"""
         with session() as db_session:
             match_uuid = str(uuid4())
             match = MatchesOrm(
@@ -28,7 +27,6 @@ class MatchDAO:
         return match
 
     def get_match_by_uuid(self, match_id: str) -> MatchesOrm | None:
-        """Извлекает матч из БД по UUID и преобразует `Score` в словарь"""
         with session() as db_session:
             match = db_session.query(MatchesOrm).filter_by(UUID=match_id).first()
             return match  # Явно возвращаем match, даже если None
@@ -61,7 +59,6 @@ class MatchDAO:
                 )
             db_session.commit()
 
-
     def build_match_query(self, db_session, player_name=None):
         """Формирует базовый SQL-запрос для поиска завершённых матчей."""
         Player1 = aliased(PlayerOrm)
@@ -88,14 +85,12 @@ class MatchDAO:
         return query
 
     def paginate_query(self, query, page, per_page):
-        """Добавляет пагинацию к SQL-запросу."""
         total_matches = query.count()
         total_pages = max(1, -(-total_matches // per_page))  # Округляем вверх
         matches = query.limit(per_page).offset((page - 1) * per_page).all()
         return matches, total_pages
 
     def get_completed_matches(self, player_name=None, page=1, per_page=5):
-        """Возвращает завершенные матчи с поиском и пагинацией."""
         with session() as db_session:
             query = self.build_match_query(db_session, player_name)
             return self.paginate_query(query, page, per_page)

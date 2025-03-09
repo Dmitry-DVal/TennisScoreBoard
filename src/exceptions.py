@@ -1,7 +1,7 @@
 class AppError(Exception):
-    """Базовое исключение приложения"""
+    """Basic application exception."""
     status_code = "500 Internal Server Error"
-    message = "Произошла ошибка"
+    message = "There was an error."
 
     def __init__(self, message=None):
         if message:
@@ -10,6 +10,7 @@ class AppError(Exception):
 
 
 class MethodNotAllowed(AppError):
+    """Method Not Allowed error(404)."""
     def __init__(self, method):
         self.status_code = "405 Method Not Allowed"
         message = f'Method {method} Not Allowed.'
@@ -17,6 +18,7 @@ class MethodNotAllowed(AppError):
 
 
 class NotFoundError(AppError):
+    """Page Not Found error(404)."""
     def __init__(self, path, *args):
         self.status_code = "404 Not Found"
         message = f'Requested path "{path}" was not found.'
@@ -24,7 +26,7 @@ class NotFoundError(AppError):
 
 
 class DateValidationError(AppError):
-    """Validation error(400)"""
+    """Validation error(400)."""
 
     def __init__(self, data, *args):
         self.status_code = "400 Bad Request"
@@ -33,7 +35,7 @@ class DateValidationError(AppError):
 
 
 class DatabaseError(AppError):
-    """Database error(500)"""
+    """Database error(500)."""
 
     def __init__(self, *args):
         self.status_code = "500 Internal Server Error"

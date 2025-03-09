@@ -1,8 +1,8 @@
 from typing import Dict, Union
 
+
 class MatchState:
     def __init__(self, data: Dict[str, Union[int, list]]):
-        """Инициализация состояния матча из словаря."""
         self.data = data
 
     @property
@@ -45,7 +45,5 @@ class MatchState:
     def is_match_over(self, value: bool):
         self.data["is_match_over"] = value
 
-
     def to_dict(self) -> Dict[str, Union[int, list]]:
-        """Возвращает текущее состояние в виде словаря."""
         return self.data

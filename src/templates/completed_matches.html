@@ -56,39 +56,31 @@
             </tbody>
         </table>
     </section>
-    <section class="content">
     <div class="pagination">
         {% if current_page > 1 %}
-            <a class="page-link prev" href="?page={{ current_page - 1 }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">‹</a>
+        <a class="page-link prev"
+           href="?page={{ current_page - 1 }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">‹</a>
         {% endif %}
 
-        <a class="page-link {% if current_page == 1 %}current{% endif %}"
-           href="?page=1{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">1</a>
-
-        {% if current_page > 3 %}
-            <span class="dots">...</span>
+        {% if current_page > 2 %}
+        <span class="dots">...</span>
         {% endif %}
 
-        {% if current_page > 1 and current_page < total_pages %}
-            <a class="page-link current" href="?page={{ current_page }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">
-                {{ current_page }}
-            </a>
-        {% endif %}
+        <a class="page-link current"
+           href="?page={{ current_page }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">
+            {{ current_page }}
+        </a>
 
-        {% if current_page < total_pages - 2 %}
-            <span class="dots">...</span>
-        {% endif %}
-
-        {% if total_pages > 1 %}
-            <a class="page-link {% if current_page == total_pages %}current{% endif %}"
-               href="?page={{ total_pages }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">{{ total_pages }}</a>
+        {% if current_page < total_pages - 1 %}
+        <span class="dots">...</span>
         {% endif %}
 
         {% if current_page < total_pages %}
-            <a class="page-link next" href="?page={{ current_page + 1 }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">›</a>
+        <a class="page-link next"
+           href="?page={{ current_page + 1 }}{% if filter_by_player_name %}&filter_by_player_name={{ filter_by_player_name }}{% endif %}">›</a>
         {% endif %}
     </div>
-</section>
+    </section>
 </main>
 
 {% endblock %}

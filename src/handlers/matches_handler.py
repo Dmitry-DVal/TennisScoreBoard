@@ -2,24 +2,24 @@ import urllib.parse
 
 from sqlalchemy.exc import ProgrammingError
 
+from src.dao import MatchDAO
 from src.exceptions import DateValidationError, MethodNotAllowed
 from src.handlers import RequestHandler, logger
-from src.dao import MatchDAO
 
 
 class MatchesHandler(RequestHandler):
-    """Обработчик страницы завершенных матчей."""
+    """Handler for the completed matches page."""
     MAX_MATCHERS_PER_PAGE = 4
 
     def handle_get(self, environ, start_response):
         data = urllib.parse.parse_qs(environ.get("QUERY_STRING", ""))
-        logger.debug(f"Полученные данные в GET {data}")
+        logger.debug(f"Received data in GET {data}")
 
         player_name = data.get('filter_by_player_name', [None])[0]
         try:
             page = int(data.get('page', [1])[0])
 
-            logger.debug(f"Фильтр по игроку: {player_name}, Страница: {page}")
+            logger.debug(f"Filter by player: {player_name}, Page: {page}")
 
             matches, total_pages = MatchDAO().get_completed_matches(
                 player_name=player_name,

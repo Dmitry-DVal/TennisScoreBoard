@@ -12,7 +12,7 @@ class MatchesOrm(Base):
     ID: Mapped[int] = mapped_column(primary_key=True,
                                     autoincrement=True)
     UUID: Mapped[str] = mapped_column(String(50), unique=True, default=lambda: str(
-        uuid4()))  # ✅ Конвертируем UUID в строку
+        uuid4()))
 
     # UUID: Mapped[UUID] = mapped_column(String(50), unique=True, default=uuid4) #
     Player1: Mapped[int] = mapped_column(ForeignKey("Players.ID", ondelete="CASCADE"),
@@ -21,7 +21,7 @@ class MatchesOrm(Base):
                                          nullable=False)
     Winner: Mapped[int] = mapped_column(ForeignKey('Players.ID', ondelete="CASCADE"),
                                         nullable=True)
-    Score: Mapped[dict] = mapped_column(JSON)  # Можно использовать json вместо строки
+    Score: Mapped[dict] = mapped_column(JSON)
 
     def __repr__(self):
         return f"""Match={self.ID},

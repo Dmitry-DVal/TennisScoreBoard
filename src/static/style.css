@@ -130,7 +130,6 @@ header {
 .creat_match_button:hover {
     border-radius: 50px;
     background: #00a881;
-    /*background: #00473d;*/
 }
 
 
@@ -165,77 +164,68 @@ footer .content {
     height: 40px;
 }
 
-/* Общий стиль формы */
 .new_match_form {
-    max-width: 500px; /* Ограничение ширины формы */
-    margin: 20px auto; /* Центрирование формы на странице */
+    max-width: 500px;
+    margin: 20px auto;
     padding: 20px;
-    border: 1px solid #007764; /* Рамка формы */
+    border: 1px solid #007764;
     border-radius: 10px;
-    background-color: #f9f9f9; /* Легкий фон */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень */
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Стили для контейнера имени игрока */
 .players_name {
-    margin-bottom: 20px; /* Отступ между полями ввода */
+    margin-bottom: 20px;
     display: flex;
-    flex-direction: column; /* Поле и подпись располагаются вертикально */
+    flex-direction: column;
 }
 
-/* Стили для поля ввода */
 .players_name input {
     padding: 10px;
-    border: 1px solid #007764; /* Цвет рамки */
+    border: 1px solid #007764;
     border-radius: 5px;
     font-size: 16px;
-    outline: none; /* Убирает стандартное выделение */
+    outline: none;
     transition: border-color 0.3s;
 }
 
-/* Изменение цвета рамки при фокусе */
 .players_name input:focus {
-    border-color: #00a881; /* Цвет рамки при фокусе */
+    border-color: #00a881;
 }
 
-/* Стили для подписей (label) */
 .players_name label {
     font-size: 14px;
     color: #007764;
     margin-top: 8px;
 }
 
-/* Стили для требований */
 .requirements {
     font-size: 12px;
     color: #555;
     margin-bottom: 20px;
 }
 
-/* Стили для кнопки отправки */
 .create_match {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #007764; /* Цвет кнопки */
+    background-color: #007764;
     color: white;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-/* Эффект при наведении на кнопку */
 .create_match:hover {
-    background-color: #00a881; /* Более светлый цвет */
+    background-color: #00a881;
 }
 
-/* Общее для всей формы */
 .new_match_form input:invalid {
-    border-color: red; /* Красная рамка, если введены некорректные данные */
+    border-color: red;
 }
 
 .new_match_form input:valid {
-    border-color: #00a881; /* Зеленая рамка для валидных данных */
+    border-color: #00a881;
 }
 
 
@@ -255,8 +245,6 @@ footer .content {
     }
 }
 
-
-/* Центрирование таблицы */
 .score_table {
     display: flex;
     justify-content: center;
@@ -264,7 +252,6 @@ footer .content {
     margin-top: 30px;
 }
 
-/* Таблица и ячейки */
 .table {
     border-collapse: collapse;
     width: 80%;
@@ -282,7 +269,6 @@ th {
     color: white;
 }
 
-/* Стили для кнопок "Score" */
 .score-btn {
     background-color: #007764;
     color: white;
@@ -300,7 +286,6 @@ th {
     border-radius: 8px;
 }
 
-/* Медиа-запросы */
 @media screen and (max-width: 800px) {
     .table {
         width: 95%;

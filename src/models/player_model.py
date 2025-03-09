@@ -13,7 +13,7 @@ class PlayerOrm(Base):
     def __repr__(self):
         return f"Player: (id = {self.ID}, name = {self.Name})"
 
-    # Зависимости
+    # Dependencies
     matches_as_player1 = relationship("MatchesOrm",
                                       foreign_keys="[MatchesOrm.Player1]")
     matches_as_player2 = relationship("MatchesOrm",

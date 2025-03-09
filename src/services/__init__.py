@@ -1,2 +1,2 @@
 from .match_state import MatchState
-from .scoring_service import Game
+from .scoring_service import Match

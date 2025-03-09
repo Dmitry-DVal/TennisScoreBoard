@@ -3,7 +3,7 @@ from src.handlers import RequestHandler
 
 
 class IndexHandler(RequestHandler):
-    """Обработчик главной страницы."""
+    """Home page handler."""
 
     def handle_get(self, environ, start_response):
         response_body = self.render_template("index.html")

@@ -2,7 +2,7 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from src.services.scoring_service import Match
+from src.services import MatchState, Match
 
 
 class TestMatchScoring:
@@ -10,10 +10,10 @@ class TestMatchScoring:
     @pytest.mark.parametrize(
         "games, player, result, is_tie_break, expectation",
         [
-            ([4, 5], 1, [0, 0], False, does_not_raise()),
+            ([4, 5], 1, [4, 6], False, does_not_raise()),
             ([5, 5], 1, [5, 6], False, does_not_raise()),
             ([5, 6], 0, [6, 6], True, does_not_raise()),
-            ([5, 6], 1, [0, 0], False, does_not_raise()),
+            ([5, 6], 1, [5, 7], False, does_not_raise()),
             ([0, 0], 0, [1, 0], False, does_not_raise()),
             ([1, 0], 1, [1, 1], False, does_not_raise()),
             ([2, 0], 0, [3, 0], False, does_not_raise()),
@@ -24,16 +24,16 @@ class TestMatchScoring:
         ]
     )
     def test_set_add_game(self, games, player, result, is_tie_break, expectation):
-        """Правильность добавления геймов в сете."""
-        match = Match()
+        """The correctness of adding games in a set."""
+        match = Match(MatchState({"sets": [0, 0], "games": games, "points": [0, 0]}))
         match.set_obj.games = games
         with expectation:
             match.set_obj.add_game(player)
             assert match.set_obj.games == result
-            assert match.set_obj.is_tie_break == is_tie_break
+            assert match.state.is_tie_break == is_tie_break
 
     @pytest.mark.parametrize(
-        "scores, player, result, expectation",
+        "points, player, result, expectation",
         [
             ([40, 40], 1, [40, 'ad'], does_not_raise()),
             ([40, 40], 0, ['ad', 40], does_not_raise()),
@@ -51,15 +51,13 @@ class TestMatchScoring:
             ([0, 15], 2, [0, 15], pytest.raises(IndexError)),
         ]
     )
-    # Обработчка передачи других типов данных. ? Если это вообще надо.
-    def test_game_add_point(self, scores, player, result, expectation):
-        """Правильность добавления очков при стандартном гейме."""
-        match = Match()
-        match.set_obj.game_obj.scores = scores
+    def test_game_add_point(self, points, player, result, expectation):
+        """Correctness of adding points at a standard game."""
+        match = Match(MatchState({"sets": [0, 0], "points": points}))
+        match.state.games = points
         with expectation:
             match.set_obj.game_obj.add_point(player)
-            assert match.set_obj.game_obj.scores == result
-
+            assert match.state.points == result
 
     @pytest.mark.parametrize(
         "scores, player, result, expectation",
@@ -78,13 +76,13 @@ class TestMatchScoring:
         ]
     )
     def test_game_tie_break(self, scores, player, result, expectation):
-        """Правильность добавления очков при тайбрейке гейме."""
-        match = Match()
-        match.set_obj.is_tie_break = True
-        match.set_obj.game_obj.scores = scores
+        """Correctness of adding points in a tiebreak game."""
+        match = Match(MatchState({"sets": [0, 0], "games": [0, 0], "points": scores}))
+        match.state.is_tie_break = True
+
         with expectation:
             match.set_obj.game_obj.add_point(player)
-            assert match.set_obj.game_obj.scores == result
+            assert match.state.points == result
 
     @pytest.mark.parametrize(
         "sets, player, result, is_match_over, expectation",
@@ -99,11 +97,9 @@ class TestMatchScoring:
         ]
     )
     def test_match_winner(self, sets, player, result, is_match_over, expectation):
-        """Проверка, что матч завершается правильно."""
-        match = Match()
-        match.sets = sets
+        """Checking that the match ends correctly."""
+        match = Match(MatchState({"sets": sets, "points": [0, 0]}))
         with expectation:
             match.add_set(player)
-            assert match.sets == result
+            assert match.state.sets == result
             assert match.is_match_over(player) == is_match_over
-
