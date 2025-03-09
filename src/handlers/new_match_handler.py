@@ -5,7 +5,7 @@ from pydantic import ValidationError
 from src.dtos.player_dto import PlayerDTO
 from src.exceptions import DateValidationError
 from src.handlers import RequestHandler, logger
-from src.services import MatchService, PlayerService
+from src.dao import MatchDAO, PlayerDAO
 
 
 class NewMatchHandler(RequestHandler):
@@ -54,13 +54,13 @@ class NewMatchHandler(RequestHandler):
 
     def _get_or_create_players(self, player1_dto, player2_dto):
         """Находит или создает игроков в БД."""
-        player1 = PlayerService().get_or_create_player(player1_dto.name)
-        player2 = PlayerService().get_or_create_player(player2_dto.name)
+        player1 = PlayerDAO().get_or_create_player(player1_dto.name)
+        player2 = PlayerDAO().get_or_create_player(player2_dto.name)
         logger.debug(f"Игроки найдены или созданы: {player1}, {player2}")
         return player1, player2
 
     def _create_and_redirect(self, player1, player2, start_response):
         """Создает матч и делает редирект на страницу счета."""
-        match = MatchService().create_match(player1.ID, player2.ID)
+        match = MatchDAO().create_match(player1.ID, player2.ID)
         logger.debug(f"Матч успешно создан: {match}")
         return self.redirect(start_response, f"/match-score?uuid={match.UUID}")

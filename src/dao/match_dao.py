@@ -5,14 +5,13 @@ from sqlalchemy import func
 from sqlalchemy.orm import aliased
 
 from src.database import session
-from src.models.match_model import MatchesOrm
-from src.models.player_model import PlayerOrm
+from src.models import MatchesOrm, PlayerOrm
 from src.services.scoring_service import Match
 
 logger = logging.getLogger("app_logger")
 
 
-class MatchService:
+class MatchDAO:
     def create_match(self, id_first_player: int, id_second_player: int) -> MatchesOrm:
         """Создает матч"""
         with session() as db_session:
@@ -79,9 +78,8 @@ class MatchService:
                       ).join(Winner, MatchesOrm.Winner == Winner.ID
                              ).filter(MatchesOrm.Winner.isnot(None))
 
-        # 🔥 Исправляем поиск по имени (учитываем регистр и частичное совпадение)
         if player_name:
-            player_name = f"%{player_name.lower()}%"  # 👈 Исправлено
+            player_name = f"%{player_name.lower()}%"
             query = query.filter(
                 (func.lower(Player1.Name).like(player_name)) |
                 (func.lower(Player2.Name).like(player_name))

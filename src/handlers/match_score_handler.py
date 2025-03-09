@@ -6,19 +6,15 @@ from pydantic import ValidationError
 from src.dtos.point_winner_dto import PointWinnerDTO
 from src.exceptions import DateValidationError
 from src.handlers.base_handler import RequestHandler, logger
-from src.services import MatchService, PlayerService
-
+from src.dao import MatchDAO, PlayerDAO
 
 
 class MatchScoreHandler(RequestHandler):
-    def __init__(self):
-        self.match_service = MatchService()
-        self.player_service = PlayerService()
 
     def handle_get(self, environ, start_response):
         """Обрабатывает GET-запрос и рендерит страницу матча."""
         match_id = self.get_uuid_from_request(environ)
-        match = self.match_service.get_match_by_uuid(match_id)
+        match = MatchDAO().get_match_by_uuid(match_id)
 
         logger.debug(f"Запрос имен игроков, счета у сервиса для рендеринга страниц")
 
@@ -51,7 +47,7 @@ class MatchScoreHandler(RequestHandler):
 
             # Обновляем счёт матча
             match_id = self.get_uuid_from_request(environ)
-            updated_match = self.match_service.update_match_score(
+            updated_match = MatchDAO().update_match_score(
                 match_id,
                 validated_data.player
             )
@@ -71,7 +67,7 @@ class MatchScoreHandler(RequestHandler):
 
     def _get_player_names(self, match):
         """Получает имена игроков по их ID."""
-        return self.player_service.get_players_name_by_id(
+        return PlayerDAO().get_players_name_by_id(
             match.Player1,
             match.Player2
         )
