@@ -64,6 +64,8 @@ python3 src/server.py
 
 8. Теперь сервер доступен по адресу: http://127.0.0.1:8000
 
+[page_overview.pdf](https://github.com/user-attachments/files/19160448/page_overview.pdf)
+
 ### Структура проекта
 
 ```
