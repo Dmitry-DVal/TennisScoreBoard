@@ -11,11 +11,58 @@ https://zhukovsd.github.io/python-backend-learning-course/projects/tennis-scoreb
 ### Мотивация проекта
 
 - Создать клиент-серверное приложение с веб-интерфейсом
-- Получить практический опыт работы с ORM SQLAlchemy и инструментом миграций Alembic
-- Сверстать простой веб-интерфейс без сторонних библиотек
-- Закрепление знакомства с архитектурным паттерном MVC(S)
+- Получить практический опыт работы с ORM SQLAlchemy и Alembic
+- Верстка веб-интерфейса без сторонних CSS-фреймворков
+- Использовать MVC(S) в проектировании архитектуры
 
-Для запуска приложения - запустить server.py (сделать детальную инструкцию)
+### Запуск приложения
+1. Склонируйте репозиторий
+```
+git clone https://github.com/Dmitry-DVal/TennisScoreBoard
+```
+2. Установите MySQL и создайте базу данных
+```
+CREATE DATABASE name_db;
+```
+3. Настройте виртуальное окружение
+```
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# MacOS/Linux
+python3 -m venv venv
+source venv/bin/activate
+```
+4. Установите зависимости
+```
+pip install -r requirements.txt
+```
+5. Настройте подключение к БД
+- Создайте файл ".env"
+```
+# содержание .env
+DB_DRIVER = mysql+pymysql
+DB_USER = your_username   # Имя пользователя MySQL
+DB_PASSWORD = your_password   # Пароль MySQL
+DB_HOST = localhost
+DB_PORT = 3306
+DB_NAME = name_bd  # Имя базы данных
+```
+6. Примените миграции базы данных
+```
+alembic upgrade head
+```
+7. Запустите сервер
+```
+# Windows
+python src/server.py
+
+# MacOS/Linux
+python3 src/server.py
+```
+
+8. Теперь сервер доступен по адресу: http://127.0.0.1:8000
 
 ### Структура проекта
 
@@ -84,7 +131,7 @@ project/
 - Отслеживание счета игры
 - Поиск по завершенным матчам
 
-### Используемые технологии: (Внести уточнения)
+### Используемые технологии:
 
 - Python - коллекции, ООП
 - Паттерн MVC(S)
