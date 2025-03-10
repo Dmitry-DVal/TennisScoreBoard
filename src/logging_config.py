@@ -35,7 +35,7 @@ LOG_CONFIG = {
         'debug_file_handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
-            'filename': '../logs/debug.log',
+            'filename': 'debug.log',
             'formatter': 'simple_format',
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 1,
@@ -44,7 +44,7 @@ LOG_CONFIG = {
         'error_file_handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'ERROR',
-            'filename': '../logs/error.log',
+            'filename': 'error.log',
             'formatter': 'std_format',
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 1,

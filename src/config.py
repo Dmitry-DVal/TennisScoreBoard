@@ -1,9 +1,15 @@
 import logging
 import os
+import sys
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = logging.getLogger("app_logger")
+
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 
 env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
 

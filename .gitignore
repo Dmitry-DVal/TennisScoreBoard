@@ -7,7 +7,7 @@ venv/
 __pycache__
 
 # Миграции Alembic
-src/migrations/versions/
+
 
 # Прочее
 tasks.txt

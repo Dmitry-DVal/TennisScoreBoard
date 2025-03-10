@@ -38,7 +38,10 @@ source venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-5. Настройте подключение к БД
+5. Создайте папку logs/. В ней будут храниться логи.
+(Папка должна быть на одном уровне с src)
+
+6. Настройте подключение к БД
 - Создайте файл ".env"
 ```
 # содержание .env
@@ -49,11 +52,11 @@ DB_HOST = localhost
 DB_PORT = 3306
 DB_NAME = name_bd  # Имя базы данных
 ```
-6. Примените миграции базы данных
+7. Примените миграции базы данных
 ```
 alembic upgrade head
 ```
-7. Запустите сервер
+8. Запустите сервер
 ```
 # Windows
 python src/server.py
@@ -61,8 +64,7 @@ python src/server.py
 # MacOS/Linux
 python3 src/server.py
 ```
-
-8. Теперь сервер доступен по адресу: http://127.0.0.1:8000
+9. Теперь сервер доступен по адресу: http://127.0.0.1:8000
 
 [page_overview.pdf](https://github.com/user-attachments/files/19160448/page_overview.pdf)
 
