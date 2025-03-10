@@ -1,8 +1,8 @@
-"""Updated MatchesOrm: Score to JSON
+"""Initial migration
 
-Revision ID: fc141b79651a
-Revises: 0d00edc14d33
-Create Date: 2025-02-16 16:04:22.500650
+Revision ID: b455b671d7a1
+Revises: 
+Create Date: 2025-03-10 22:25:28.511279
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision: str = 'fc141b79651a'
-down_revision: Union[str, None] = '0d00edc14d33'
+revision: str = 'b455b671d7a1'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
