@@ -9,5 +9,5 @@ class PlayerDTO(BaseModel):
     @classmethod
     def normalize_name(cls, value: str) -> str:
         """Удаляем лишние пробелы и форматируем имя"""
-        value = " ".join(value.strip().split())  # Убираем лишние пробелы
-        return value.title()  # Делаем Заглавную букву в начале каждого слова
+        value = " ".join(value.strip().split())
+        return value.title()

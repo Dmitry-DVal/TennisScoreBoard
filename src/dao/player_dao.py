@@ -3,7 +3,8 @@ from src.models.player_model import PlayerOrm
 
 
 class PlayerDAO:
-    def get_or_create_player(self, player_name: str) -> PlayerOrm:
+    @staticmethod
+    def get_or_create_player(player_name: str) -> PlayerOrm:
         with session() as db_session:
             player = db_session.query(PlayerOrm).filter_by(Name=player_name).first()
             if not player:

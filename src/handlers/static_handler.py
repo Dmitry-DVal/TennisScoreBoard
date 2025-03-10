@@ -10,7 +10,7 @@ logger = logging.getLogger("app_logger")
 class StaticHandler(RequestHandler):
     """Handler for static file distribution."""
 
-    def handle_get(self, environ, start_response):
+    def handle_get(self, environ: dict, start_response) -> list[bytes]:
         path = environ.get("PATH_INFO", "/")
         file_path = os.path.join(STATIC_DIR, path[len("/static/"):])
 
@@ -25,7 +25,7 @@ class StaticHandler(RequestHandler):
         return self.make_response(start_response, response_body, "200 OK", content_type)
 
     @staticmethod
-    def get_content_type(file_path)-> str:
+    def get_content_type(file_path) -> str:
         ext_map = {
             ".css": "text/css",
             ".js": "application/javascript",

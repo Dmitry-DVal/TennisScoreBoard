@@ -5,7 +5,7 @@ from src.handlers import RequestHandler
 class IndexHandler(RequestHandler):
     """Home page handler."""
 
-    def handle_get(self, environ, start_response):
+    def handle_get(self, environ: dict, start_response) -> list[bytes]:
         response_body = self.render_template("index.html")
         return self.make_response(start_response, response_body)
 

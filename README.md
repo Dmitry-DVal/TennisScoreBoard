@@ -23,6 +23,10 @@ https://zhukovsd.github.io/python-backend-learning-course/projects/tennis-scoreb
 project/
 ├── logs/                      # Файлы с логами
 ├── src/
+│   ├── dao/                   # Data Access Objects
+│   │   ├── __init__.py
+│   │   ├── match_dao.py
+│   │   ├── player_dao.py
 │   ├── dtos/                  # Data Transfer Objects
 │   │   ├── __init__.py
 │   │   ├── player_dto.py
@@ -43,10 +47,8 @@ project/
 │   │   ├── player_model.py    # Модель игрока
 │   ├── services/              # Сервисы с логикой
 │   │   ├── __init__.py
-│   │   ├── match_service.py   # Сервис матча
-│   │   ├── player_service.py  # Сервис игрока
-│   │   ├── scoring_service.py # Модель подсчета очков
 │   │   ├── match_state.py     # Работа с состоянием матча
+│   │   ├── scoring_service.py # Модель подсчета очков
 │   ├── static/                # Статика (CSS, изображения)
 │   │   ├── style.css
 │   │   ├── images/            # Изображения для сайта
@@ -60,6 +62,7 @@ project/
 │   ├── __init__.py
 │   ├── config.py             # Конфигурация проекта
 │   ├── database.py           # Конфигурация базы данных
+│   ├── exceptions.py         # Кастомные исключения приложения
 │   ├── logging_config.py     # Настройка логов
 │   ├── router.py             # Маршрутизатор
 │   ├── server.py             # Запуск сервера
