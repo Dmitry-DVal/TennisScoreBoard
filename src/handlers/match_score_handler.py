@@ -60,4 +60,11 @@ class MatchScoreHandler(RequestHandler):
 
         logger.debug(f"Validated data: {validated_data} - Won a point")
 
-        return self.handle_get(environ, start_response)
+        response_headers = [
+            ('Location', f'/match-score?uuid={match_id}'),
+            ('Content-Type', 'text/html'),
+        ]
+        start_response('302 Found', response_headers)
+
+        return []
+
