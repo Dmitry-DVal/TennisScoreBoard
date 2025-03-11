@@ -20,9 +20,10 @@ class Router:
     def application(cls, environ, start_response):
         """Call the desired handler by URL."""
         path = environ.get("PATH_INFO", "/")
+        logger.debug(f"Requested path {path}")
         method = environ.get("REQUEST_METHOD", "GET")
 
-        if path.startswith("/static/"):
+        if path.startswith("/static/") or path.startswith("/favicon.ico"):
             return StaticHandler().handle_get(environ, start_response)
 
         handler = cls.routes.get(path)

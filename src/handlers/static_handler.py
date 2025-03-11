@@ -12,6 +12,10 @@ class StaticHandler(RequestHandler):
 
     def handle_get(self, environ: dict, start_response) -> list[bytes]:
         path = environ.get("PATH_INFO", "/")
+
+        if path == "/favicon.ico":
+            path = "/static/favicon.ico"
+
         file_path = os.path.join(STATIC_DIR, path[len("/static/"):])
 
         if os.path.exists(file_path) and os.path.isfile(file_path):
@@ -33,6 +37,7 @@ class StaticHandler(RequestHandler):
             ".jpg": "image/jpeg",
             ".jpeg": "image/jpeg",
             ".gif": "image/gif",
-            ".webp": "image/webp"
+            ".webp": "image/webp",
+            ".ico": "image/x-icon"
         }
         return ext_map.get(os.path.splitext(file_path)[1], "application/octet-stream")
