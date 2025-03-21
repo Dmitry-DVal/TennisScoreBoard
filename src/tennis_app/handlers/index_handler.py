@@ -1,5 +1,5 @@
-from src.exceptions import MethodNotAllowed
-from src.handlers import RequestHandler
+from tennis_app.exceptions import MethodNotAllowed
+from tennis_app.handlers import RequestHandler
 
 
 class IndexHandler(RequestHandler):

@@ -2,7 +2,7 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from src.services import MatchState, Match
+from tennis_app.services import MatchState, Match
 
 
 class TestMatchScoring:

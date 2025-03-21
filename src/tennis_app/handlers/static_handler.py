@@ -1,8 +1,8 @@
 import logging
 import os
 
-from src.config import STATIC_DIR
-from src.handlers.base_handler import RequestHandler
+from tennis_app.config import STATIC_DIR
+from tennis_app.handlers.base_handler import RequestHandler
 
 logger = logging.getLogger("app_logger")
 

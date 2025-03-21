@@ -6,12 +6,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = logging.getLogger("app_logger")
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
-env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
+env_path = os.path.join(BASE_DIR, ".env")
 
 
 class Settings(BaseSettings):
@@ -31,11 +31,11 @@ class Settings(BaseSettings):
 
 
 settings_db = Settings()
+print(settings_db.DATABASE_URL_pymysql, 'DATABASE_URL_pymysql')
 
 # Main paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
-STATIC_DIR = os.path.join(BASE_DIR, "static")
+TEMPLATES_DIR = os.path.join(BASE_DIR, "src", "tennis_app", "templates")
+STATIC_DIR = os.path.join(BASE_DIR, "src", "tennis_app", "static")
 
 # Server settings
 HOST = "127.0.0.1"

@@ -1,6 +1,6 @@
 import logging
 
-from src.services.match_state import MatchState
+from tennis_app.services.match_state import MatchState
 
 logger = logging.getLogger("app_logger")
 

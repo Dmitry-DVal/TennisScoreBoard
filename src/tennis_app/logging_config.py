@@ -1,4 +1,9 @@
 import logging.config
+import os
+
+from tennis_app.config import BASE_DIR
+
+log_dir = os.path.join(BASE_DIR, 'logs')
 
 LOG_CONFIG = {
     'version': 1,
@@ -35,7 +40,7 @@ LOG_CONFIG = {
         'debug_file_handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
-            'filename': 'logs/debug.log',
+            'filename': os.path.join(log_dir, 'debug.log'),
             'formatter': 'simple_format',
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 1,
@@ -44,7 +49,7 @@ LOG_CONFIG = {
         'error_file_handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'ERROR',
-            'filename': 'logs/error.log',
+            'filename': os.path.join(log_dir, 'error.log'),
             'formatter': 'std_format',
             'maxBytes': 10485760,  # 10 MB
             'backupCount': 1,

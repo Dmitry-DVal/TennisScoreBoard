@@ -1,8 +1,9 @@
 import logging
 
-from handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler, MatchesHandler,
-                      StaticHandler, RequestHandler)
-from src.exceptions import NotFoundError
+from tennis_app.exceptions import NotFoundError
+from tennis_app.handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler,
+                                 MatchesHandler,
+                                 StaticHandler, RequestHandler)
 
 logger = logging.getLogger("app_logger")
 

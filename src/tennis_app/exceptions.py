@@ -11,6 +11,7 @@ class AppError(Exception):
 
 class MethodNotAllowed(AppError):
     """Method Not Allowed error(404)."""
+
     def __init__(self, method):
         self.status_code = "405 Method Not Allowed"
         message = f'Method {method} Not Allowed.'
@@ -19,6 +20,7 @@ class MethodNotAllowed(AppError):
 
 class NotFoundError(AppError):
     """Page Not Found error(404)."""
+
     def __init__(self, path, *args):
         self.status_code = "404 Not Found"
         message = f'Requested path "{path}" was not found.'

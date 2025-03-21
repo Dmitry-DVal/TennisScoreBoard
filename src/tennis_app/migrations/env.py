@@ -4,9 +4,9 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from src.config import settings_db
-from src.database import Base
-from src.models import MatchesOrm, PlayerOrm  # noqa
+from tennis_app.config import settings_db
+from tennis_app.database import Base
+from tennis_app.models import MatchesOrm, PlayerOrm  # noqa
 
 config = context.config
 

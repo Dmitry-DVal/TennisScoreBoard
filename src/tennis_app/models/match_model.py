@@ -4,7 +4,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.orm import mapped_column, Mapped
 
-from src.database import Base
+from tennis_app.database import Base
 
 
 class MatchesOrm(Base):
@@ -14,7 +14,6 @@ class MatchesOrm(Base):
     UUID: Mapped[str] = mapped_column(String(50), unique=True, default=lambda: str(
         uuid4()))
 
-    # UUID: Mapped[UUID] = mapped_column(String(50), unique=True, default=uuid4) #
     Player1: Mapped[int] = mapped_column(ForeignKey("Players.ID", ondelete="CASCADE"),
                                          nullable=False)
     Player2: Mapped[int] = mapped_column(ForeignKey('Players.ID', ondelete="CASCADE"),

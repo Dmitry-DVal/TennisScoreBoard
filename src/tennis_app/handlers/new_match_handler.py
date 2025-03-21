@@ -3,10 +3,10 @@ from typing import Tuple, Any
 
 from pydantic import ValidationError
 
-from src.dao import MatchDAO, PlayerDAO
-from src.dtos import PlayerDTO
-from src.exceptions import DateValidationError
-from src.handlers import RequestHandler, logger
+from tennis_app.dao import MatchDAO, PlayerDAO
+from tennis_app.dtos import PlayerDTO
+from tennis_app.exceptions import DateValidationError
+from tennis_app.handlers import RequestHandler, logger
 
 
 class NewMatchHandler(RequestHandler):

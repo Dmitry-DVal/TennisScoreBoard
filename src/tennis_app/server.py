@@ -3,9 +3,8 @@ import logging
 # from paste.translogger import TransLogger
 from waitress import serve
 
-import config
-import logging_config  # noqa
-from router import Router
+from tennis_app import config, logging_config  # noqa
+from tennis_app.router import Router
 
 logger = logging.getLogger("app_logger")
 

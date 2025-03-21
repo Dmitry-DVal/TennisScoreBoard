@@ -5,8 +5,8 @@ from abc import abstractmethod, ABC
 from jinja2 import Environment, FileSystemLoader
 from sqlalchemy.exc import IntegrityError
 
-from src.config import TEMPLATES_DIR
-from src.exceptions import AppError, MethodNotAllowed, DatabaseError
+from tennis_app.config import TEMPLATES_DIR
+from tennis_app.exceptions import AppError, MethodNotAllowed, DatabaseError
 
 logger = logging.getLogger("app_logger")
 

@@ -1,5 +1,5 @@
-from src.database import session
-from src.models.player_model import PlayerOrm
+from tennis_app.database import session
+from tennis_app.models.player_model import PlayerOrm
 
 
 class PlayerDAO:

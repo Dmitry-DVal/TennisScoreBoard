@@ -6,9 +6,9 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session, Query
 from sqlalchemy.orm import aliased
 
-from src.database import session
-from src.models import MatchesOrm, PlayerOrm
-from src.services import Match
+from tennis_app.database import session
+from tennis_app.models import MatchesOrm, PlayerOrm
+from tennis_app.services import Match
 
 logger = logging.getLogger("app_logger")
 

@@ -2,9 +2,9 @@ import urllib.parse
 
 from sqlalchemy.exc import ProgrammingError
 
-from src.dao import MatchDAO
-from src.exceptions import DateValidationError, MethodNotAllowed
-from src.handlers import RequestHandler, logger
+from tennis_app.dao import MatchDAO
+from tennis_app.exceptions import DateValidationError, MethodNotAllowed
+from tennis_app.handlers import RequestHandler, logger
 
 
 class MatchesHandler(RequestHandler):
