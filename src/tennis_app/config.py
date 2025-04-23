@@ -7,7 +7,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 logger = logging.getLogger("app_logger")
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
@@ -22,7 +21,7 @@ class Settings(BaseSettings):
     DB_NAME: str
 
     @property
-    def DATABASE_URL_pymysql(self):
+    def DATABASE_URL_pymysql(self) -> str:
         dsn = f"mysql+pymysql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         logger.info(f"DSN configuration {dsn}")
         return dsn
@@ -30,8 +29,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=env_path)
 
 
-settings_db = Settings()
-print(settings_db.DATABASE_URL_pymysql, 'DATABASE_URL_pymysql')
+settings_db = Settings()  # type: ignore
 
 # Main paths
 TEMPLATES_DIR = os.path.join(BASE_DIR, "src", "tennis_app", "templates")

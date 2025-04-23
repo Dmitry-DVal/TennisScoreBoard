@@ -1,6 +1,7 @@
 import logging
 
-from tennis_app.services.match_state import MatchState
+from typing import Any
+from tennis_app.core.match_state import MatchState
 
 logger = logging.getLogger("app_logger")
 
@@ -15,11 +16,11 @@ class Match:
     def add_set(self, player: int) -> bool:
         self.state.sets[player] += 1
         logger.debug(f"Player  {player} wins a set.")
-        logger.debug(f"Match score: {self.state.to_dict()}")
+        logger.debug("Match score: %s", self.state.to_dict())
 
         if self.state.sets[player] == 2:
             self.state.is_match_over = True  # Завершаем матч
-            logger.debug(f"The match is over! Winner: Player {player}.")
+            logger.debug("The match is over! Winner: Player %s", player)
 
         return self.state.is_match_over
 
@@ -27,10 +28,10 @@ class Match:
         return self.state.sets[player] == 2
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data: dict[str, Any]) -> "Match":
         return cls(MatchState(data))
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         return self.state.to_dict()
 
 
@@ -43,7 +44,7 @@ class Set:
     def add_game(self, player: int) -> None:
         self.state.games[player] += 1
         logger.debug(f"Player  {player} wins a game.")
-        logger.debug(f"Match score: {self.state.to_dict()}")
+        logger.debug("Match score: %s", self.state.to_dict())
         if self.is_won_set(player):
             self.match.add_set(player)
             self.drop_games()
@@ -53,13 +54,13 @@ class Set:
             return True
         if self.state.games == [6, 6]:
             self.state.is_tie_break = True
-            logger.debug(f"Playing tiebreak: {self.state.to_dict()}")
+            logger.debug("Playing tiebreak: %s", self.state.to_dict())
             return False
         if self.state.games[player] == 7:
             return True
         return False
 
-    def drop_games(self):
+    def drop_games(self) -> None:
         self.state.games = [0, 0]
         self.state.is_tie_break = False
         self.game_obj.drop_point()
@@ -70,13 +71,12 @@ class Game:
         self.set_obj = set_obj
         self.state = set_obj.state
 
-    def drop_point(self):
+    def drop_point(self) -> None:
         self.state.points = [0, 0]
 
     def add_point(self, player: int) -> None:
-
         if self.state.is_match_over:
-            logger.warning(f"The game is over. Players can no longer get a point.")
+            logger.warning("The game is over. Players can no longer get a point.")
             return
 
         if self.state.is_tie_break:
@@ -85,30 +85,35 @@ class Game:
             self.play_game(player)
 
     def play_tie_break(self, player: int) -> None:
-        self.state.points[player] += 1
-        logger.debug(f"Tiebreak score: {self.state.to_dict()}")
-        if self.state.points[player] >= 7 and (
-                self.state.points[player] - self.state.points[1 - player]) >= 2:
+        self.state.points[player] += 1  # type: ignore[operator]
+        logger.debug("Tiebreak score: %s", self.state.to_dict())
+        if (
+            self.state.points[player] >= 7  # type: ignore[operator]
+            and (self.state.points[player] - self.state.points[1 - player]) >= 2  # type: ignore[operator]
+        ):
             self.set_obj.add_game(player)
 
     def play_game(self, player: int) -> None:
-        if self.state.points[player] == 30:
-            self.state.points[player] += 10
-        elif self.state.points[player] == 40:
+        point = self.state.points[player]  # type: ignore[operator]
+
+        if point == 30:
+            self.state.points[player] = 40  # type: ignore[operator]
+        elif point == 40:
             self._handle_forty_score(player)
-        elif self.state.points[player] == "ad":
-            self.state.points[player] = 60
+        elif point == "ad":
+            self.state.points[player] = 60  # type: ignore[operator]
             self.set_obj.add_game(player)
             self.drop_point()
-        else:
-            self.state.points[player] += 15
-        logger.debug(f"Game score: {self.state.to_dict()}")
+        elif isinstance(point, int):
+            self.state.points[player] += 15  # type: ignore[operator]
+
+        logger.debug("Game score: %s", self.state.to_dict())
 
     def _handle_forty_score(self, player: int) -> None:
         if self.state.points[1 - player] == "ad":
             self.state.points = [40, 40]
-        elif self.state.points[1 - player] < 40:
-            self.state.points[player] += 20
+        elif self.state.points[1 - player] < 40:  # type: ignore[operator]
+            self.state.points[player] += 20  # type: ignore[operator]
             self.set_obj.add_game(player)
             self.drop_point()
         elif self.state.points == [40, 40]:

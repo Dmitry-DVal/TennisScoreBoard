@@ -75,10 +75,14 @@ python3 -m tennis_app.server
 
 ```
 project/
-├── logs/                      # Файлы с логами
+├── logs/                          # Файлы с логами
 ├── src/
 │   ├── __init__.py
-│   ├── tennis_app/                   # Data Access Objects
+│   ├── tennis_app/               
+│	│   ├── core/                  
+│	│   │   ├── __init__.py
+│	│   │   ├── match_engine.py    # Модель подсчета очков
+│	│   │   ├── match_state.py     # Работа с состоянием матча
 │	│   ├── dao/                   # Data Access Objects
 │	│   │   ├── __init__.py
 │	│   │   ├── match_dao.py
@@ -103,8 +107,8 @@ project/
 │	│   │   ├── player_model.py    # Модель игрока
 │	│   ├── services/              # Сервисы с логикой
 │	│   │   ├── __init__.py
-│	│   │   ├── match_state.py     # Работа с состоянием матча
-│	│   │   ├── scoring_service.py # Модель подсчета очков
+│	│   │   ├── match_service.py  
+│	│   │   ├── player_service.py  
 │	│   ├── static/                # Статика (CSS, изображения)
 │	│   │   ├── style.css
 │	│   │   ├── images/            # Изображения для сайта
@@ -126,11 +130,13 @@ project/
 │   ├── __init__.py
 │   ├── test_scoring_service.py
 ├── .env                      # Настройки подключения к БД
-├── __init__.py
 ├── alembic.ini               # Параметры конфигурации alembic
+├── mypy.ini                  # Параметры конфигурации mypy
 ├── pytest.ini                # Параметры конфигурации pytest
 ├── README                    # О проекте
-├── requirements              # Зависимости
+├── requirements              # Зависимости для проды
+├── requirements_dev          # Зависимости для разработки
+
 
 ```
 

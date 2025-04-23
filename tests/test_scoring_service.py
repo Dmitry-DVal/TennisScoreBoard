@@ -2,11 +2,10 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from tennis_app.services import MatchState, Match
+from tennis_app.core import MatchState, Match
 
 
 class TestMatchScoring:
-
     @pytest.mark.parametrize(
         "games, player, result, is_tie_break, expectation",
         [
@@ -21,7 +20,7 @@ class TestMatchScoring:
             ([0, 1], [1], [0, 1], False, pytest.raises(TypeError)),
             ([0, 1], {1}, [0, 1], False, pytest.raises(TypeError)),
             ([0, 1], 2, [0, 1], False, pytest.raises(IndexError)),
-        ]
+        ],
     )
     def test_set_add_game(self, games, player, result, is_tie_break, expectation):
         """The correctness of adding games in a set."""
@@ -35,12 +34,12 @@ class TestMatchScoring:
     @pytest.mark.parametrize(
         "points, player, result, expectation",
         [
-            ([40, 40], 1, [40, 'ad'], does_not_raise()),
-            ([40, 40], 0, ['ad', 40], does_not_raise()),
+            ([40, 40], 1, [40, "ad"], does_not_raise()),
+            ([40, 40], 0, ["ad", 40], does_not_raise()),
             ([15, 40], 1, [0, 0], does_not_raise()),
-            ([40, 'ad'], 1, [0, 0], does_not_raise()),
-            (['ad', 40], 1, [40, 40], does_not_raise()),
-            (['ad', 40], 0, [0, 0], does_not_raise()),
+            ([40, "ad"], 1, [0, 0], does_not_raise()),
+            (["ad", 40], 1, [40, 40], does_not_raise()),
+            (["ad", 40], 0, [0, 0], does_not_raise()),
             ([0, 0], 0, [15, 0], does_not_raise()),
             ([15, 0], 0, [30, 0], does_not_raise()),
             ([30, 0], 0, [40, 0], does_not_raise()),
@@ -49,7 +48,7 @@ class TestMatchScoring:
             ([0, 15], [1], [0, 15], pytest.raises(TypeError)),
             ([0, 15], {1}, [0, 15], pytest.raises(TypeError)),
             ([0, 15], 2, [0, 15], pytest.raises(IndexError)),
-        ]
+        ],
     )
     def test_game_add_point(self, points, player, result, expectation):
         """Correctness of adding points at a standard game."""
@@ -73,7 +72,7 @@ class TestMatchScoring:
             ([0, 4], 1, [0, 5], does_not_raise()),
             ([0, 5], 1, [0, 6], does_not_raise()),
             ([0, 6], 1, [0, 7], does_not_raise()),
-        ]
+        ],
     )
     def test_game_tie_break(self, scores, player, result, expectation):
         """Correctness of adding points in a tiebreak game."""
@@ -94,7 +93,7 @@ class TestMatchScoring:
             ([1, 1], [1], [1, 1], True, pytest.raises(TypeError)),
             ([1, 1], {1}, [1, 1], True, pytest.raises(TypeError)),
             ([1, 1], 2, [1, 1], True, pytest.raises(IndexError)),
-        ]
+        ],
     )
     def test_match_winner(self, sets, player, result, is_match_over, expectation):
         """Checking that the match ends correctly."""

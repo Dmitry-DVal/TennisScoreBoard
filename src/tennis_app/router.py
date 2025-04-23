@@ -1,15 +1,22 @@
 import logging
+from typing import Callable
 
 from tennis_app.exceptions import NotFoundError
-from tennis_app.handlers import (IndexHandler, NewMatchHandler, MatchScoreHandler,
-                                 MatchesHandler,
-                                 StaticHandler, RequestHandler)
+from tennis_app.handlers import (
+    IndexHandler,
+    NewMatchHandler,
+    MatchScoreHandler,
+    MatchesHandler,
+    StaticHandler,
+    RequestHandler,
+)
 
 logger = logging.getLogger("app_logger")
 
 
 class Router:
     """Request Router"""
+
     routes = {
         "/": IndexHandler(),
         "/new-match": NewMatchHandler(),
@@ -18,10 +25,11 @@ class Router:
     }
 
     @classmethod
-    def application(cls, environ, start_response):
+    def application(cls, environ: dict, start_response: Callable) -> list[bytes]:
         """Call the desired handler by URL."""
         path = environ.get("PATH_INFO", "/")
-        logger.debug(f"Requested path {path}")
+        logger.debug("Requested path: %s", path)
+
         method = environ.get("REQUEST_METHOD", "GET")
 
         if path.startswith("/static/") or path.startswith("/favicon.ico"):
@@ -32,5 +40,6 @@ class Router:
             logger.info(f"Request {method}: {path}")
             return handler.handle_request(environ, start_response)
         else:
-            return RequestHandler().handle_exception(start_response,
-                                                     NotFoundError(path))
+            return RequestHandler().handle_exception(
+                start_response, NotFoundError(path)
+            )
